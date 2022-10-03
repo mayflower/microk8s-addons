@@ -5,6 +5,7 @@ set -e
 source $SNAP/actions/common/utils.sh
 
 echo "Enabling Dapr"
+echo "Current ARCH ist $ARCH"
 
 if [ ! -f "${SNAP_DATA}/bin/dapr" ]
 then
