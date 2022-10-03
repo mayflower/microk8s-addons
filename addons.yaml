@@ -1,7 +1,7 @@
 microk8s-addons:
   description: "Mayflower Microk8s addon repository."
   addons:
-    - name: "Dapr"
+    - name: "dapr"
       description: "Platform agnostic event-driven application runtime"
       version: "1.8.1"
       check_status: "${SNAP_DATA}/bin/dapr"
