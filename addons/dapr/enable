@@ -9,7 +9,21 @@ echo "Enabling Dapr"
 if [ ! -f "${SNAP_DATA}/bin/dapr" ]
 then
   DAPR_VERSION="v1.8.1"
-  CURRENT_ARCH=get_current_arch()
+  ARCH=$(uname -m)
+
+  if [ $ARCH == "x86_64" ]; then
+    CURRENT_ARCH="amd64"
+  else if [ $ARCH == "aarch64" ]; then
+        CURRENT_ARCH="arm64"
+    else
+      echo "Architecture $ARCH not supported"
+      exit 1
+    fi
+  fi
+  echo "Supported Architecture $CURRENT_ARCH"
+
+
+
   echo "Fetching Dapr CLI version $DAPR_VERSION for $CURRENT_ARCH."
   run_with_sudo mkdir -p "${SNAP_DATA}/tmp/dapr"
   (cd "${SNAP_DATA}/tmp/dapr"
