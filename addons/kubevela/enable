@@ -36,10 +36,10 @@ fi
 if [ ! -z "$#"  ]
 then
   echo "Installing KubeVela"
-  KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/vela install ${ARGUMENTS[@]}
+  KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/kubectl-vela install ${ARGUMENTS[@]}
 else
   echo "Installing KubeVela with default settings"
-  KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/vela install
+  KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/kubectl-vela install
 fi
 
 run_with_sudo touch "$SNAP_USER_COMMON/vela.lock"
