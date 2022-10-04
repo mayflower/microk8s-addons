@@ -10,7 +10,7 @@ if [ ! -f "${SNAP_DATA}/bin/kubectl-vela" ]
 then
   VELA_VERSION="v1.5.6"
 
-  if ! [ $SNAP_ARCH == "arm64" ] && ! [ $SNAP_ARCH == "amd64"]; then
+  if ! [ $SNAP_ARCH == "arm64" ] && ! [ $SNAP_ARCH == "amd64" ]; then
     echo "Architecture $SNAP_ARCH not supported"
     exit 1
   fi
