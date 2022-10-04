@@ -3,7 +3,6 @@
 set -eu
 
 export PATH="$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:$PATH"
-ARCH="$($SNAP/bin/uname -m)"
 
 if [ ! -f "${SNAP_DATA}/bin/dapr" ]; then
   echo "Dapr not available, try enabling is with 'microk8s enable dapr'"
@@ -22,10 +21,9 @@ if echo "$*" | grep -v -q -- '--kubeconfig'; then
   exit_if_no_permissions
 fi
 
-ARCH=$(arch)
-if ! [ "${ARCH}" = "amd64" ] || ! [ "${ARCH}" = "arm64" ]
+if ! [ "${SNAP_ARCH}" == "amd64" ] && ! [ "${SNAP_ARCH}" = "arm64" ]
 then
-  echo "Dapr is not available for ${ARCH}"
+  echo "Dapr is not available for ${SNAP_ARCH}"
 else
   exit_if_stopped
   KUBECONFIG=$SNAP_DATA/credentials/client.config  "${SNAP_DATA}/bin/dapr" "$@"
