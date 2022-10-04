@@ -14,7 +14,9 @@ class TestAddons(object):
 
     def test_kubevela(self):
         microk8s_enable("kubevela")
-        wait_for_pod_state("", "vela-system", "running", label="app.kubernetes.io/instance=kubevela")
+        wait_for_pod_state(
+            "", "vela-system", "running", label="app.kubernetes.io/instance=kubevela"
+        )
         status = yaml.safe_load(sh.microk8s.status(format="yaml").stdout)
         expected = {"kubevela": "enabled"}
         microk8s_disable("kubevela")
