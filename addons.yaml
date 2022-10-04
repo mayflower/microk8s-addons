@@ -8,3 +8,10 @@ microk8s-addons:
       supported_architectures:
         - arm64
         - amd64
+    - name: "kubevela"
+      description: "Application-centric software delivery platform."
+      version: "1.5.6"
+      check_status: "${SNAP_DATA}/bin/kubectl-vela"
+      supported_architectures:
+        - arm64
+        - amd64
