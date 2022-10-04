@@ -26,7 +26,7 @@ then
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
   run_with_sudo mv "$SNAP_DATA/tmp/dapr/dapr" "$SNAP_DATA/bin/"
   run_with_sudo chmod +x "$SNAP_DATA/bin/"
-  run_with_sudo cp microk8s-dapr.wrapper $SNAP_COMMON/plugins/dapr
+  run_with_sudo cp $(dirname "$0")/microk8s-dapr.wrapper $SNAP_COMMON/plugins/dapr
   echo "Wrapper installed to $SNAP_COMMON/plugin/dapr"
   run_with_sudo rm -rf "$SNAP_DATA/tmp/dapr"
 fi
