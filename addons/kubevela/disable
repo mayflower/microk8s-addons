@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+source $SNAP/actions/common/utils.sh
+
+echo "Disabling KubeVela"
+
+KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/vela uninstall
+
+run_with_sudo rm -rf "${SNAP_DATA}/bin/kubectl-vela"
+run_with_sudo rm -rf "$SNAP_USER_COMMON/vela.lock"
+run_with_sudo rm -rf "$SNAP_COMMON/plugins/vela"
+
+echo "KubeVela is terminating"
