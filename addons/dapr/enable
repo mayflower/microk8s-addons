@@ -9,32 +9,25 @@ echo "Enabling Dapr"
 if [ ! -f "${SNAP_DATA}/bin/dapr" ]
 then
   DAPR_VERSION="v1.8.1"
-  ARCH=$(uname -m)
 
-  if [ $ARCH == "x86_64" ]; then
-    CURRENT_ARCH="amd64"
-  else if [ $ARCH == "aarch64" ]; then
-        CURRENT_ARCH="arm64"
-    else
-      echo "Architecture $ARCH not supported"
-      exit 1
-    fi
+  if ! [ $SNAP_ARCH == "arm64" ] && ![ $SNAP_ARCH == "amd64"]; then
+    echo "Architecture $ARCH not supported"
+    exit 1
   fi
-  echo "Supported Architecture $CURRENT_ARCH"
 
 
-
-  echo "Fetching Dapr CLI version $DAPR_VERSION for $CURRENT_ARCH."
+  echo "Fetching Dapr CLI version $DAPR_VERSION for $SNAP_ARCH."
   run_with_sudo mkdir -p "${SNAP_DATA}/tmp/dapr"
   (cd "${SNAP_DATA}/tmp/dapr"
-  fetch_as https://github.com/dapr/cli/releases/download/${DAPR_VERSION}/dapr_linux_${CURRENT_ARCH}.tar.gz "$SNAP_DATA/tmp/dapr/dapr.tar.gz"
+  fetch_as https://github.com/dapr/cli/releases/download/${DAPR_VERSION}/dapr_linux_${SNAP_ARCH}.tar.gz "$SNAP_DATA/tmp/dapr/dapr.tar.gz"
   run_with_sudo gzip -q -d "$SNAP_DATA/tmp/dapr/dapr.tar.gz"
   run_with_sudo tar -xvf "$SNAP_DATA/tmp/dapr/dapr.tar"
   run_with_sudo chmod 777 "$SNAP_DATA/tmp/dapr/dapr")
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
   run_with_sudo mv "$SNAP_DATA/tmp/dapr/dapr" "$SNAP_DATA/bin/"
   run_with_sudo chmod +x "$SNAP_DATA/bin/"
-
+  run_with_sudo cp microk8s-dapr.wrapper $SNAP_COMMON/plugins/dapr
+  echo "Wrapper installed to $SNAP_COMMON/plugin/dapr"
   run_with_sudo rm -rf "$SNAP_DATA/tmp/dapr"
 fi
 
