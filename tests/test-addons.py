@@ -11,3 +11,10 @@ class TestAddons(object):
         status = yaml.safe_load(sh.microk8s.status(format="yaml").stdout)
         expected = {"dapr": "enabled"}
         microk8s_disable("dapr")
+    def test_kubevela(self):
+        microk8s_enable("kubevela")
+        wait_for_pod_state("", "vela-system", "running", label="name=vela-core")
+        status = yaml.safe_load(sh.microk8s.status(format="yaml").stdout)
+        expected = {"kubevela": "enabled"}
+        microk8s_disable("kubevela")
+
