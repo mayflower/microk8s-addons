@@ -10,5 +10,6 @@ KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/dapr uninstall -k
 
 run_with_sudo rm -rf "${SNAP_DATA}/bin/dapr"
 run_with_sudo rm -rf "$SNAP_USER_COMMON/dapr.lock"
+run_with_sudo rm -rf "$SNAP_COMMON/plugins/dapr"
 
-echo "Dapr is terminating"
+echo "Dapr is terminating
