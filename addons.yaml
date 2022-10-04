@@ -9,7 +9,7 @@ microk8s-addons:
         - arm64
         - amd64
     - name: "kubevela"
-      description: "KubeVela is a modern software delivery platform that makes deploying and operating applications across today's hybrid, multi-cloud environments easier, faster and more reliable."
+      description: "Application-centric software delivery platform."
       version: "1.5.6"
       check_status: "${SNAP_DATA}/bin/kubectl-vela"
       supported_architectures:
