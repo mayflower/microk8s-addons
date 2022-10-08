@@ -34,10 +34,10 @@ fi
 if [ ! -z "$#"  ]
 then
   echo "Installing Istio"
-  $SNAP_DATA/bin/istioctl install -c $SNAP_DATA/credentials/client.config ${ARGUMENTS[@]}
+  $SNAP_DATA/bin/istioctl install -y -c $SNAP_DATA/credentials/client.config ${ARGUMENTS[@]}
 else
   echo "Installing Istio with default settings"
-  $SNAP_DATA/bin/istioctl install -c $SNAP_DATA/credentials/client.config
+  $SNAP_DATA/bin/istioctl install -y -c $SNAP_DATA/credentials/client.config
 fi
 
 run_with_sudo touch "$SNAP_USER_COMMON/istio.lock"
