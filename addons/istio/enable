@@ -14,7 +14,6 @@ then
     echo "Architecture $ARCH not supported"
     exit 1
   fi
-
   echo "Fetching Istio CLI version $ISTIO_VERSION for $SNAP_ARCH."
   run_with_sudo mkdir -p "${SNAP_DATA}/tmp/istio"
   (cd "${SNAP_DATA}/tmp/istio"
@@ -24,7 +23,7 @@ then
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
   run_with_sudo mv "$SNAP_DATA/tmp/istio-${ISTIO_VERSION}/bin/istioctl" "$SNAP_DATA/bin/"
   run_with_sudo chmod +x "$SNAP_DATA/bin/"
-  run_with_sudo cp $(dirname "$0")/microk8s-istioctl.wrapper $SNAP_COMMON/plugins/istioctl
+  run_with_sudo cp $(dirname "$0")/microk8s-istioctl.wrapper $SNAP_COMMON/plugins/istioctl)
   echo "Wrapper installed to $SNAP_COMMON/plugin/istioctl"
   run_with_sudo rm -rf "$SNAP_DATA/tmp/istio"
 fi
