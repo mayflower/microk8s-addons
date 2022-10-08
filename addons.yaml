@@ -15,3 +15,10 @@ microk8s-addons:
       supported_architectures:
         - arm64
         - amd64
+    - name: "istio"
+      description: "Core Istio service mesh services"
+      version: "1.15.1"
+      check_status: "${SNAP_DATA}/bin/istioctl"
+      supported_architectures:
+        - amd64
+        - arm64
