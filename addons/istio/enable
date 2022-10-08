@@ -8,7 +8,7 @@ echo "Enabling Istio"
 
 if [ ! -f "${SNAP_DATA}/bin/istioctl" ]
 then
-  ISTIO_VERSION="v1.15.1"
+  ISTIO_VERSION="1.15.1"
 
   if ! [ $SNAP_ARCH == "arm64" ] && ! [ $SNAP_ARCH == "amd64" ]; then
     echo "Architecture $ARCH not supported"
