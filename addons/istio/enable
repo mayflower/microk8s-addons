@@ -15,11 +15,10 @@ then
     exit 1
   fi
 
-
   echo "Fetching Istio CLI version $ISTIO_VERSION for $SNAP_ARCH."
   run_with_sudo mkdir -p "${SNAP_DATA}/tmp/istio"
   (cd "${SNAP_DATA}/tmp/istio"
-  fetch_as https://github.com/istio/istio/releases/download/${ISTIO-CTL_VERSION}/istio-${ISTIO_VERSION}-linux-${SNAP_ARCH}.tar.gz "$SNAP_DATA/tmp/istio/istio.tar.gz"
+  fetch_as https://github.com/istio/istio/releases/download/${ISTIO_VERSION}/istio-${ISTIO_VERSION}-linux-${SNAP_ARCH}.tar.gz "$SNAP_DATA/tmp/istio/istio.tar.gz"
   run_with_sudo gzip -q -d "$SNAP_DATA/tmp/istio/istio.tar.gz"
   run_with_sudo tar -xvf "$SNAP_DATA/tmp/istio/istio.tar"
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
