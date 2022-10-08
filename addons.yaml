@@ -22,3 +22,10 @@ microk8s-addons:
       supported_architectures:
         - amd64
         - arm64
+    - name: "redis"
+      description: "In-memory data store and message broker"
+      version: "latest/stable"
+      check_status: "pod/redis-master-0"
+      supported_architectures:
+        - amd64
+        - arm64

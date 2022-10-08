@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+source $SNAP/actions/common/utils.sh
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+REDIS_NS="redis"
+
+echo "Disabling Redis"
+
+$HELM uninstall redis -n $REDIS_NS || true
