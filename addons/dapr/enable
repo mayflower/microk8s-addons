@@ -47,6 +47,9 @@ else
   KUBECONFIG="${SNAP_DATA}/credentials/client.config ${SNAP_DATA}/bin/dapr init -k"
 fi
 
+# Allow some time for the apiserver to start
+"${SNAP}/microk8s-status.wrapper" --wait-ready --timeout 30 >/dev/null
+
 $KUBECTL apply -f "${CURRENT_DIR}/dapr.yaml"
 
 run_with_sudo touch "$SNAP_USER_COMMON/dapr.lock"
