@@ -9,11 +9,12 @@ echo "Disabling KubeVela"
 
 KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/kubectl-vela uninstall -y
 
+"$SNAP_COMMON/plugins/vela" addon disable velaux
+
 run_with_sudo rm -rf "${SNAP_DATA}/bin/kubectl-vela"
 run_with_sudo rm -rf "$SNAP_USER_COMMON/vela.lock"
 run_with_sudo rm -rf "$SNAP_COMMON/plugins/vela"
 
-"$SNAP_COMMON/plugins/vela" addon disable velaux
 
 $KUBECTL get crd |grep oam | awk '{print $1}' | xargs $KUBECTL delete crd
 
