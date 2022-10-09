@@ -1,24 +1,94 @@
-## Your repository
+## Mayflower MicroK8s Addon Repository
 
-A MicroK8s addons repository should have a comprehensive description of the addons collection it includes. The current template repository contains two addons:
+This is our repository for MicroK8s addons we like to use. Obviously we would like to transfer them to the official [MicroK8s Community Repository](https://github.com/canonical/microk8s-community-addons/) when they are in a proper state, including tests and documentation. 
+Please regard this repository as development only, all mature software is going to be moved to the community repository. 
 
-  * bash-hello-k8s, a demo addon implemented in bash
-  * python-hello-k8s, a python based demo addon
+This repository contains 4 addons:
 
-The purpose of the addons should be clearly stated. In this demo repository our goal is to demonstrate how addons are structured so as to can guide you in your first steps as an addons author.
+  * istio, a copy of the existing plugin with an updated version 
+  * redis, a simple redis addon based on bitnamis helm chart, needed for dapr
+  * dapr, a platform agnostic event driven application runtime for microservices
+  * kubevela, an application centric sofftware delivery platform based on the OAM standard
+
+All addons should work on amd64 and arm64 architectures.
+
+### Addons
+
+#### The Redis Addon
+
+This addon installs [Redis](https://redis.io/):
+
+> The open source, in-memory data store used by millions of developers as a database, cache, streaming engine, and message broker. 
+
+This addon is meant as a support for the dapr addon, that relies on redis as state and configuration storage as well as message broker. 
+However, it can be used on its own whenevery you need redis within your microk8s setup. 
+You can enable Redis support with:
+```
+microk8s enable mayflower/redis
+```
+Please note that this paddon is based on the bitnami helm chart and supports a number of additional parameters that can be found [here](https://artifacthub.io/packages/helm/bitnami/redis):
+```
+microk8s enable mayflower/redis --set auth.password=secretpassword
+```
+#### The Istio Addon
+
+This addon installs [Istio](https://istio.io):
+
+> Istio extends Kubernetes to establish a programmable, application-aware network using the powerful Envoy service proxy. Working with both Kubernetes and traditional workloads, Istio brings standard, universal traffic management, telemetry, and security to complex deployments.
+
+You can enable Istio support with:
+```
+microk8s enable mayflower/istio
+```
+
+This addon uses the command line client istioctl to install Istio. 
+It is provided as a plugin within microk8s and can be used for administration tasks:
+```
+microk8s istioctl verify-install
+```
+#### The Dapr Addon
+
+This addon installs https://dapr.io/:
+> The Distributed Application Runtime (Dapr) provides APIs that simplify microservice connectivity. Whether your communication pattern is service to service invocation or pub/sub messaging, Dapr helps you write resilient and secured microservices.
+> By letting Dapr’s sidecar take care of the complex challenges such as service discovery, message broker integration, encryption, observability, and secret management, you can focus on business logic and keep your code simple.
+
+It provides a simple dapr setup including state management, publish and subscribe messaging and configuration management based on the redis addon. 
+
+You can enable Dapr support with:
+```
+microk8s enable dapr 
+```
+
+This addon installs the dapr command line client as a MicroK8s plugin. 
+```
+microk8s dapr version
+```
+
+#### The KubeVela Addon
+
+This addon installs [KubeVela](https://kubevela.io):
+> KubeVela is a modern software delivery platform that makes deploying and operating applications across today's hybrid, multi-cloud environments easier, faster and more reliable.
+> KubeVela is infrastructure agnostic, programmable, yet most importantly, application-centric. It allows you to build powerful software, and deliver them anywhere!
+
+It provides KubeVela with VelaUX (the web ui for KubeVela).
+
+You can enable KubeVela support with:
+```
+microk8s enable kubevela
+```
+
+This addon install the vela command line client as a microk8s plugin.
+```
+microk8s vela version
+```
 
 
-### How to use an addons repository
+### How to use this addons repository
 
 #### Adding repositories
-3rd party addons repositories are supported on MicroK8s v1.24 and onwards. To add a repository on an already installed MicroK8s you have to use the `microk8s addons repo` command and provide a user friendly repo name, the path to the repository and optionally a branch within the repository. For example:
+3rd party addons repositories are supported on MicroK8s v1.24 and onwards. To add a repository on an already installed MicroK8s you have to use the `microk8s addons repo` command and provide a user friendly repo name, the path to the repository and optionally a branch within the repository. For this repository:
 ```
-microk8s addons repo add demo https://github.com/canonical/microk8s-addons-repo-template --reference main
-```
-
-As long as you have a local copy of a repository and that repository is also a git one in can also be added to a MicroK8s installation with:
-```
-microk8s.addons repo add demo ./microk8s-addons-repo-template
+microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/ --reference main
 ```
 
 #### Enabling/disabling addons
@@ -26,21 +96,22 @@ microk8s.addons repo add demo ./microk8s-addons-repo-template
 The addons of all repositories are shown in `microk8s status` along with the repo they came from. `microk8s enable` and `microk8s disable` are used to enable and disable the addons respectively. The repo name can be used to disambiguate between addons with the same name. For example:
 
 ```
-microk8s enable demo/bash-hello-k8s
+microk8s enable mayflower/redis
 ```
+
 
 #### Refreshing repositories
 
 Adding a repository to MicroK8s (via `mcirok8s addons repo add`) creates a copy of the repository under `$SNAP_COMMON/addons` (typically under `/var/snap/microk8s/common/addons/`). Authorized users are able to edit the addons to match their need. In case the upstream repository changes and you need to pull in any updates with:
 ```
-microk8s addons repo update <repo_name>
+microk8s addons repo update mayflower
 ```
 
 #### Removing repositories
 
 Removing repositories is done with:
 ```
-microk8s addons repo remove <repo_name>
+microk8s addons repo remove mayflower
 ```
 
 
