@@ -14,6 +14,11 @@ All addons should work on amd64 and arm64 architectures.
 
 ### Addons
 
+To use the addons provided by this repository please add it to your current microk8s setup:
+```
+microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/
+```
+
 #### The Redis Addon
 
 This addon installs [Redis](https://redis.io/):
