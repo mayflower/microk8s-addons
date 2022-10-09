@@ -5,6 +5,7 @@ set -e
 source $SNAP/actions/common/utils.sh
 
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
 echo "Enabling Dapr"
 
@@ -28,25 +29,25 @@ then
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
   run_with_sudo mv "$SNAP_DATA/tmp/dapr/dapr" "$SNAP_DATA/bin/"
   run_with_sudo chmod +x "$SNAP_DATA/bin/"
-  run_with_sudo cp $(dirname "$0")/microk8s-dapr.wrapper $SNAP_COMMON/plugins/dapr
+  run_with_sudo cp "${CURRENT_DIR}/microk8s-dapr.wrapper" "${SNAP_COMMON}/plugins/dapr"
   echo "Wrapper installed to $SNAP_COMMON/plugin/dapr"
-  run_with_sudo rm -rf "$SNAP_DATA/tmp/dapr"
+  run_with_sudo rm -rf "${SNAP_DATA}/tmp/dapr"
 fi
 
-"$SNAP/microk8s-enable.wrapper" dns redis
+"${SNAP}/microk8s-enable.wrapper" dns redis
 # Allow some time for the apiserver to start
-${SNAP}/microk8s-status.wrapper --wait-ready --timeout 30 >/dev/null
+"${SNAP}/microk8s-status.wrapper" --wait-ready --timeout 30 >/dev/null
 
 if [ ! -z "$#"  ]
 then
   echo "Installing Dapr"
-  KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/dapr init -k ${ARGUMENTS[@]}
+  KUBECONFIG="${SNAP_DATA}/credentials/client.config ${SNAP_DATA}/bin/dapr init -k ${ARGUMENTS[@]}"
 else
   echo "Installing Dapr with default settings"
-  KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/dapr init -k 
+  KUBECONFIG="${SNAP_DATA}/credentials/client.config ${SNAP_DATA}/bin/dapr init -k"
 fi
 
-$KUBECTL apply -f "${SNAP_DATA}/dapr/dapr.yaml"
+$KUBECTL apply -f "${CURRENT_DIR}/dapr.yaml"
 
 run_with_sudo touch "$SNAP_USER_COMMON/dapr.lock"
 
