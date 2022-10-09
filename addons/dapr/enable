@@ -41,10 +41,10 @@ fi
 if [ ! -z "$#"  ]
 then
   echo "Installing Dapr"
-  KUBECONFIG="${SNAP_DATA}/credentials/client.config ${SNAP_DATA}/bin/dapr init -k ${ARGUMENTS[@]}"
+  KUBECONFIG="${SNAP_DATA}/credentials/client.config" "${SNAP_DATA}/bin/dapr init -k ${ARGUMENTS[@]}"
 else
   echo "Installing Dapr with default settings"
-  KUBECONFIG="${SNAP_DATA}/credentials/client.config ${SNAP_DATA}/bin/dapr init -k"
+  KUBECONFIG="${SNAP_DATA}/credentials/client.config" "${SNAP_DATA}/bin/dapr init -k"
 fi
 
 # Allow some time for the apiserver to start
