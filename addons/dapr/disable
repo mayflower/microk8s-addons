@@ -4,12 +4,14 @@ set -e
 
 source $SNAP/actions/common/utils.sh
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+
 
 echo "Disabling Dapr"
 
 KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/dapr uninstall -k
 
-$KUBECTL delete -f "${SNAP_DATA}/dapr/dapr.yaml" || true
+$KUBECTL delete -f "${CURRENT_DIR}/dapr.yaml" || true
 run_with_sudo rm -rf "${SNAP_DATA}/bin/dapr"
 run_with_sudo rm -rf "$SNAP_USER_COMMON/dapr.lock"
 run_with_sudo rm -rf "$SNAP_COMMON/plugins/dapr"
