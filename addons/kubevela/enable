@@ -41,7 +41,7 @@ else
   echo "Installing KubeVela with default settings"
   KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/kubectl-vela install -y
 fi
-"${SNAP_COMMON}/plugins/vela" addon enable vealux
+"${SNAP_COMMON}/plugins/vela" addon enable velaux
 
 run_with_sudo touch "$SNAP_USER_COMMON/vela.lock"
 
