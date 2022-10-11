@@ -9,8 +9,10 @@ This repository contains 4 addons:
   * redis, a simple redis addon based on bitnamis helm chart, needed for dapr
   * dapr, a platform agnostic event driven application runtime for microservices
   * kubevela, an application centric sofftware delivery platform based on the OAM standard
+  * keycloak, a service for user federation, strong authentication, user management, fine-grained authorizatio
+  * kubeview, a Kubernetes cluster visualiser and visual explorer
+  * postgresql, an open source object-relational database known for reliability and data integrity
 
-All addons should work on amd64 and arm64 architectures.
 
 ### Addons
 
@@ -37,8 +39,6 @@ Please note that this addon is based on the bitnami helm chart and supports a nu
 ```
 microk8s enable mayflower/keycloak --set  --set auth.adminPassword=secretpassword
 ```
-
-
 
 #### The Redis Addon
 
@@ -93,8 +93,6 @@ Please note that this addon is based on the official helm chart and supports a n
 ```
 microk8s enable mayflower/kubeview --set ingress.enabled=true
 ```
-
-
 
 #### The Istio Addon
 
