@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -e
+
+source $SNAP/actions/common/utils.sh
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+KUBEVIEW_NS="kubeview"
+
+echo "Disabling kubeview"
+
+$HELM uninstall kubeview -n $KUBEVIEW_NS || true
+
+$KUBECTL delete namespace $KUBEVIEW_NS

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -eu
+
+source "$SNAP/actions/common/utils.sh"
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+KUBEVIEW_NS="kubeview"
+
+"$SNAP/microk8s-enable.wrapper" dns
+"$SNAP/microk8s-enable.wrapper" helm3
+
+# make sure the "kubeview" namespace exist
+$KUBECTL create namespace "$KUBEVIEW_NS" > /dev/null 2>&1 || true
+
+$HELM repo add kubeview https://benc-uk.github.io/kubeview/charts
+$HELM repo update
+$HELM -n $KUBEVIEW_NS install kubeview kubeview/kubeview
+
+echo "Kubeview is installed"
+
