@@ -19,6 +19,27 @@ To use the addons provided by this repository please add it to your current micr
 microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/
 ```
 
+#### KeyCloak Addon
+
+This addon installs [KeyCloak](https://www.keycloak.org/)
+
+> Add authentication to applications and secure services with minimum effort.
+> No need to deal with storing users or authenticating users.
+> Keycloak provides user federation, strong authentication, user management, fine-grained authorization, and more.
+
+This addon provides a simple way to provide KeyClak within your microk8s setup.
+
+You can enable Redis support with:
+```
+microk8s enable mayflower/keycloak
+```
+Please note that this addon is based on the bitnami helm chart and supports a number of additional parameters that can be found [here](https://artifacthub.io/packages/helm/bitnami/keycloak):
+```
+microk8s enable mayflower/keycloak --set  --set auth.adminPassword=secretpassword
+```
+
+
+
 #### The Redis Addon
 
 This addon installs [Redis](https://redis.io/):
