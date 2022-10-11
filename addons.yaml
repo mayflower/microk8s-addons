@@ -29,3 +29,9 @@ microk8s-addons:
       supported_architectures:
         - amd64
         - arm64
+    - name: "postgresql"
+      description: "An open source object-relational database known for reliability and data integrity"
+      version: "latest/stable"
+      check_status: "pod/postgresql-0"
+      supported_architectures:
+        - amd64

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -eu
+
+source "$SNAP/actions/common/utils.sh"
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+POSTGRESQL_NS="postgresql"
+
+"$SNAP/microk8s-enable.wrapper" dns
+"$SNAP/microk8s-enable.wrapper" helm3
+"$SNAP/microk8s-enable.wrapper" hostpath-storage
+
+# make sure the "postgresql" namespace exist
+$KUBECTL create namespace "$POSTGRESQL_NS" > /dev/null 2>&1 || true
+
+$HELM repo add bitnami https://charts.bitnami.com/bitnami
+$HELM repo update
+$HELM -n $POSTGRESQL_NS install postgresql bitnami/postgresql
+
+echo "postgresql is installed"
+

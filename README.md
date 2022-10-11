@@ -31,10 +31,30 @@ You can enable Redis support with:
 ```
 microk8s enable mayflower/redis
 ```
-Please note that this paddon is based on the bitnami helm chart and supports a number of additional parameters that can be found [here](https://artifacthub.io/packages/helm/bitnami/redis):
+Please note that this addon is based on the bitnami helm chart and supports a number of additional parameters that can be found [here](https://artifacthub.io/packages/helm/bitnami/redis):
 ```
 microk8s enable mayflower/redis --set auth.password=secretpassword
 ```
+
+#### The PostgreSQL Addon
+
+This addon installs [PostgreSQL](https://www.postgresql.org/):
+
+> PostgreSQL is a powerful, open source object-relational database system with over 30 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance.
+
+
+This addon provides a simple way to provide a PostgreSQL database within your microk8s setup.
+
+You can enable postgresql support with:
+```
+microk8s enable postgresql
+```
+Please note that this addon is based on the bitnami helm chart and supports a number of additional parameters that can be found [here](https://artifacthub.io/packages/helm/bitnami/postgresql):
+```
+microk8s enable mayflower/postgresql --set auth.postgresPassword=secretpassword
+```
+
+
 #### The Istio Addon
 
 This addon installs [Istio](https://istio.io):
