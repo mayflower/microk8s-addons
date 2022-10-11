@@ -45,7 +45,6 @@ microk8s-addons:
     - name: "keycloak"
       description: "Keycloak provides user federation, strong authentication, user management, fine-grained authorization, and more."
       version: "latest/stable"
-      check_status: "deployment.apps/kubeview"
+      check_status: "pod/keycloak-0"
       supported_architectures:
         - amd64
-        - arm64
