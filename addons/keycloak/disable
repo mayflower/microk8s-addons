@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+source $SNAP/actions/common/utils.sh
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+KEYYCLOAK_NS="keycloak"
+
+echo "Disabling keycloak"
+
+$HELM uninstall keycloak -n $KEYCLOAK_NS || true
+

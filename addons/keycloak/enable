@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -eu
+
+source "$SNAP/actions/common/utils.sh"
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+KEYCLOAK_NS="keycloak"
+
+"$SNAP/microk8s-enable.wrapper" dns
+"$SNAP/microk8s-enable.wrapper" helm3
+"$SNAP/microk8s-enable.wrapper" hostpath-storage
+
+# make sure the "keycloak" namespace exist
+$KUBECTL create namespace "$KEYCLOAK_NS" > /dev/null 2>&1 || true
+
+$HELM repo add bitnami https://charts.bitnami.com/bitnami
+$HELM repo update
+$HELM -n $KEYCLOAK_NS install keycloak bitnami/keycloak
+
+echo "keycloak is installed"
+
