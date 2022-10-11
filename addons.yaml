@@ -35,3 +35,11 @@ microk8s-addons:
       check_status: "pod/postgresql-0"
       supported_architectures:
         - amd64
+    - name: "kubeview"
+      description: "Kubernetes cluster visualiser and visual explorer"
+      version: "latest/stable"
+      check_status: "deployment.apps/kubeview"
+      supported_architectures:
+        - amd64
+        - arm64
+

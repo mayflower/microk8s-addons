@@ -54,6 +54,26 @@ Please note that this addon is based on the bitnami helm chart and supports a nu
 microk8s enable mayflower/postgresql --set auth.postgresPassword=secretpassword
 ```
 
+#### KubeView Addon
+
+
+This addon installs [KubeView](https://kubeview.benco.io/):
+
+> KubeView displays what is happening inside a Kubernetes cluster (or single namespace), it maps out the API objects and how they are interconnected. Data is fetched real-time from the Kubernetes API. The status of some objects (Pods, ReplicaSets, Deployments) is colour coded red/green to represent their status and health
+
+
+This addon provides a nice overview what is going on in your microk8s.
+
+You can enable postgresql support with:
+```
+microk8s enable kubeview
+```
+Please note that this addon is based on the official helm chart and supports a number of additional parameters that can be found [here](https://kubeview.benco.io/):
+```
+microk8s enable mayflower/kubeview --set ingress.enabled=true
+```
+
+
 
 #### The Istio Addon
 
