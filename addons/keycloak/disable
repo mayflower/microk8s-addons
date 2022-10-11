@@ -7,7 +7,7 @@ source $SNAP/actions/common/utils.sh
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 HELM="$SNAP/microk8s-helm3.wrapper"
 
-KEYYCLOAK_NS="keycloak"
+KEYCLOAK_NS="keycloak"
 
 echo "Disabling keycloak"
 
