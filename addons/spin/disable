@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -e
+
+source $SNAP/actions/common/utils.sh
+$SHIM_BINARY="containerd-shim-spin-v1"
+$SHIM_PATH="{SNAP_DATA}/bin/${SHIM_BINARY}"
+
+echo "Disabling Spin"
+
+run_with_sudo rm -rf "${SHIM_BINARY}"
+run_with_sudo rm -rf "$SNAP_USER_COMMON/spin.lock"
+

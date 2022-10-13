@@ -48,3 +48,9 @@ microk8s-addons:
       check_status: "pod/keycloak-0"
       supported_architectures:
         - amd64
+    - name: "spin"
+      description: "A simple runner for spin based on wasmtime" 
+      version: "latest/stable"
+      check_status: "pod/wasmtime"
+      supported_architectures:
+        - amd64

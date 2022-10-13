@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+set -e
+
+source $SNAP/actions/common/utils.sh
+
+$SHIM_BINARY="containerd-shim-spin-v1"
+$SHIM_PATH="{SNAP_DATA}/bin/${SHIM_BINARY}"
+
+echo "Enabling spin"
+
+if [ ! -f "${SNAP_DATA}/bin/${SHIM_BINARY}" ]
+then
+  SHIM_VERSION="v0.3.0"
+
+  if ! [ $SNAP_ARCH == "amd64" ]; then
+    echo "Architecture $ARCH not supported"
+    exit 1
+  fi
+  echo "Fetching shim version $SHIM_VERSION for $SNAP_ARCH."
+  run_with_sudo mkdir -p "${SNAP_DATA}/tmp/spin"
+  (cd "${SNAP_DATA}/tmp/spin"
+  echo "Fetching https://github.com/deislabs/containerd-spin-shims/releases/download/${SHIM_VERSION}/containerd-spin-shims-v1-${SHIM_VERSION}-linux-${SNAP_ARCH}.tar.gz"
+  fetch_as "https://github.com/deislabs/containerd-spin-shims/releases/download/${SHIM_VERSION}/containerd-spin-shims-v1-${SHIM_VERSION}-linux-${SNAP_ARCH}.tar.gz" "$SNAP_DATA/tmp/spin/spin.tar.gz"
+  run_with_sudo gzip -q -d "$SNAP_DATA/tmp/spin/spin.tar.gz"
+  run_with_sudo tar -xvf "$SNAP_DATA/tmp/spin/spin.tar"
+  run_with_sudo mkdir -p "$SNAP_DATA/bin/"
+  run_with_sudo mv "$SNAP_DATA/tmp/spin/${SHIM_BINARY}" "${SHIM_PATH}"
+  run_with_sudo chmod +x "$SNAP_DATA/bin/"
+  run_with_sudo rm -rf "$SNAP_DATA/tmp/spin"
+fi
+
+"$SNAP/microk8s-enable.wrapper" dns
+
+# Configure container PATH so it finds the spin shim binary 
+$CONTAINERD_ENV = "${SNAP_DATA}/args/containerd-env"
+if ! grep -qF 'SHIM_SPIN_PATH' "${CONTAINERD_ENV}"; then
+  run_with_sudo echo "SHIM_SPIN_PATH=${SHIM_PATH}" >> "${CONTAINERD_ENV}"
+  run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
+fi
+run_with_sudo touch "$SNAP_USER_COMMON/spin.lock"
+
+echo "Spin support is available"
+echo ""
+echo ""
+echo "To use the kata runtime set the 'kata' runtimeClassName, eg:"
+echo ""
+echo "kind: Pod"
+echo "metadata:"
+echo "  name: helloworld-spin"
+echo "spec:"
+echo "  runtimeClassName: spin"
+echo "  containers:"
+echo "  - name: helloworld-spin"
+echo "    image: helloworld-spin"
+echo ""
