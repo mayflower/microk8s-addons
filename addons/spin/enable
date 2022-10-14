@@ -46,7 +46,7 @@ if grep -q "spin" "${CONTAINERD_TEMPLATE}"; then
 
   run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
 else
-  echo "Spin already implemented in containerd"
+  echo "Spin already exists in ${CONTAINERD_TEMPLATE}"
 fi
 run_with_sudo touch "$SNAP_USER_COMMON/spin.lock"
 
