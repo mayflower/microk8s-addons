@@ -6,6 +6,7 @@ source $SNAP/actions/common/utils.sh
 
 $SHIM_BINARY="containerd-shim-spin-v1"
 $SHIM_PATH="{SNAP_DATA}/bin/${SHIM_BINARY}"
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 
 echo "Enabling spin"
 
@@ -40,17 +41,31 @@ if ! grep -qF 'SHIM_SPIN_PATH' "${CONTAINERD_ENV}"; then
 fi
 run_with_sudo touch "$SNAP_USER_COMMON/spin.lock"
 
+$KUBECTL apply -f "${CURRENT_DIR}/dapr.yaml"
+
+
 echo "Spin support is available"
 echo ""
 echo ""
 echo "To use the kata runtime set the 'kata' runtimeClassName, eg:"
 echo ""
-echo "kind: Pod"
+echo "apiVersion: apps/v1i"
+echo "kind: Deployment"
 echo "metadata:"
-echo "  name: helloworld-spin"
+echo "  name: wasm-spin"
 echo "spec:"
-echo "  runtimeClassName: spin"
-echo "  containers:"
-echo "  - name: helloworld-spin"
-echo "    image: helloworld-spin"
+echo "  replicas: 3"
+echo "  selector:"
+echo "    matchLabels:"
+echo "      app: wasm-spin"
+echo "  template:"
+echo "    metadata:"
+echo "      labels:"
+echo "        app: wasm-spin"
+echo "    spec:"
+echo "      runtimeClassName: wasmtime-spin"
+echo "      containers:"
+echo "        - name: testwasm"
+echo "          image: ghcr.io/deislabs/containerd-wasm-shims/examples/spin-rust-hello:latest"
+echo "          command: [\"/\"]"
 echo ""
