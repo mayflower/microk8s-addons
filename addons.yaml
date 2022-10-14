@@ -51,7 +51,7 @@ microk8s-addons:
     - name: "spin"
       description: "A simple runner for spin based on wasmtime" 
       version: "latest/stable"
-      check_status: "{SNAP_DATA}/var/lock/spin.enabled"
+      check_status: "${SNAP_DATA}/var/lock/spin.enabled"
       supported_architectures:
         - amd64
         - arm64
