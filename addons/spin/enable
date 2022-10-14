@@ -4,8 +4,8 @@ set -e
 
 source $SNAP/actions/common/utils.sh
 
-$SHIM_BINARY="containerd-shim-spin-v1"
-$SHIM_PATH="{SNAP_DATA}/plugin/${SHIM_BINARY}"
+SHIM_BINARY="containerd-shim-spin-v1"
+SHIM_PATH="{SNAP_DATA}/plugin/${SHIM_BINARY}"
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 
 echo "Enabling spin"
