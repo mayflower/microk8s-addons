@@ -48,7 +48,7 @@ if ! grep -q "spin" "${CONTAINERD_TEMPLATE}"; then
 else
   echo "Spin already exists in ${CONTAINERD_TEMPLATE}"
 fi
-run_with_sudo touch "$SNAP_USER_COMMON/spin.lock"
+run_with_sudo touch "${SNAP_DATA}/var/lock/spin.enabled"
 
 $KUBECTL apply -f "${CURRENT_DIR}/runtime.yaml"
 

@@ -12,5 +12,5 @@ CONTAINERD_TEMPLATE="${SNAP_DATA}/args/containerd-template.toml"
 run_with_sudo sed -i '/^# spin start/,/^# spin end/{/#spin end/!d}' "${CONTAINERD_TEMPLATE}"
 run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
 run_with_sudo rm -rf "${SHIM_BINARY}"
-run_with_sudo rm -rf "$SNAP_USER_COMMON/spin.lock"
+run_with_sudo rm -rf "${SNAP_DATA}/var/lock/spin.enabled"
 
