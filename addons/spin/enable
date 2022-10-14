@@ -45,7 +45,7 @@ if ! grep -qF 'SHIM_SPIN_PATH' "${CONTAINERD_ENV}"; then
 fi
 run_with_sudo touch "$SNAP_USER_COMMON/spin.lock"
 
-$KUBECTL apply -f "${CURRENT_DIR}/dapr.yaml"
+$KUBECTL apply -f "${CURRENT_DIR}/runtime.yaml"
 
 
 echo "Spin support is available"
