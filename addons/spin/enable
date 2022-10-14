@@ -38,10 +38,12 @@ fi
 
 "$SNAP/microk8s-enable.wrapper" dns
 
-# Configure container PATH so it finds the spin shim binary 
-CONTAINERD_ENV="${SNAP_DATA}/args/containerd-env"
-if ! grep -qF 'SHIM_SPIN_PATH' "${CONTAINERD_ENV}"; then
-  run_with_sudo echo "SHIM_SPIN_PATH=${SHIM_PATH}" >> "${CONTAINERD_ENV}"
+# Add spin runtime to containerd-template.toml 
+CONTAINERD_TEMPLATE="${SNAP_DATA}/args/containerd-template.toml"
+if ! grep -qF 'runtimes.spin' "${CONTAINERD_TEMPLATE}"; then
+  run_with_sudo cp "${CONTAINERD_TEMPLATE}" "${SNAP_DATA}/tmp/"
+  run_with_sudo sed '/plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.*/i\        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin"]\n\          runtime_type = "io.containerd.spin.v1"\n'  "${SNAP_DATA}/tmp/containerd-template.toml"
+
   run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
 fi
 run_with_sudo touch "$SNAP_USER_COMMON/spin.lock"
