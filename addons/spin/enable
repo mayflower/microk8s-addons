@@ -42,7 +42,7 @@ fi
 CONTAINERD_TEMPLATE="${SNAP_DATA}/args/containerd-template.toml"
 if ! grep -qF 'runtimes.spin' "${CONTAINERD_TEMPLATE}"; then
   run_with_sudo cp "${CONTAINERD_TEMPLATE}" "${SNAP_DATA}/tmp/"
-  run_with_sudo sed '/plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.*/i\        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin"]\n\          runtime_type = "io.containerd.spin.v1"\n'  "${CONTAINERD_TEMPLATE}" >> "${SNAP_DATA}/tmp/containerd-template.toml"
+  run_with_sudo sed '/plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.*/i\        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin"]\n\          runtime_type = "io.containerd.spin.v1"\n'  "${SNAP_DATA}/tmp/containerd-template.toml" >  "${SNAP_DATA}/tmp/containerd-template.toml"
 
   run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
 fi
