@@ -15,9 +15,9 @@ then
   SHIM_VERSION="v0.3.0"
 
   if [ $SNAP_ARCH == "arm64" ]; then
-    SHIM_ARCH = "aarch64"
+    SHIM_ARCH="aarch64"
   elif [ $SNAP_ARCH == "amd64" ]; then
-    SHIM_ARCH = "amd64"
+    SHIM_ARCH="amd64"
   else 
     echo "Architecture $SNAP_ARCH not supported"
     exit 1
