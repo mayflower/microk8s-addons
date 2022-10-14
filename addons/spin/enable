@@ -40,11 +40,13 @@ fi
 
 # Add spin runtime to containerd-template.toml 
 CONTAINERD_TEMPLATE="${SNAP_DATA}/args/containerd-template.toml"
-if ! grep -qF 'runtimes.spin' "${CONTAINERD_TEMPLATE}"; then
+if ! grep 'runtimes.spin' "${CONTAINERD_TEMPLATE}"; then
   echo "Adding plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin to containerd configuration"
   run_with_sudo sed -i "/plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.*/i\        [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.spin]\\n\\          runtime_type = \"io.containerd.spin.v1\"\\n\\n\\          [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.spin.options]\\n\\            BinaryName = \"${SNAP_DATA}/bin/${SHIM_BINARY}\"\\n" "${CONTAINERD_TEMPLATE}"
 
   run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
+else
+  echo "Spin already implemented in containerd"
 fi
 run_with_sudo touch "$SNAP_USER_COMMON/spin.lock"
 
