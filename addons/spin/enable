@@ -44,7 +44,7 @@ fi
 CONTAINERD_ENV="${SNAP_DATA}/args/containerd-env"
 if ! grep -q "SPIN_PATH" "${CONTAINERD_ENV}"; then
   echo "Add Spin Path (${SHIM_PATH})to containerd environment"
-  run_with_sudo echo "# spin start\nSPIN_PATH=\"${SNAP_DATA}/bin\"\nPATH=\$PATH:\$SPIN_PATH\n# spin end\n" >> "${CONTAINERD_ENV}"
+  run_with_sudo echo -ne "# spin start\nSPIN_PATH=\"${SNAP_DATA}/bin\"\nPATH=\$PATH:\$SPIN_PATH\n# spin end\n" >> "${CONTAINERD_ENV}"
 else
   echo "Spin path already in containerd environment"
 fi

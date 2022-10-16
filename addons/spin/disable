@@ -13,6 +13,6 @@ CONTAINERD_ENV="${SNAP_DATA}/args/containerd-env"
 run_with_sudo sed -i '/^# spin start/,/^# spin end/{/#spin end/!d}' "${CONTAINERD_TEMPLATE}"
 run_with_sudo sed -i '/^# spin start/,/^# spin end/{/#spin end/!d}' "${CONTAINERD_ENV}"
 run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
-run_with_sudo rm -rf "${SHIM_BINARY}"
+run_with_sudo rm -rf "${SHIM_PATH}"
 run_with_sudo rm -rf "${SNAP_DATA}/var/lock/spin.enabled"
 
