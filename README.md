@@ -37,6 +37,12 @@ You can enable Spin support with
 microk8s enable spin
 ```
 
+The spin module includes a wrapper for [wasm-to-oci](https://github.com/engineerd/wasm-to-oci), that can be used 
+to push WebAssembly modules to the microk8s registry: 
+```
+microk8s enable registry 
+microk8s wasm-to-oci push ./spin_hello_world.wasm localhost:32000/spin-hello-world:registry
+```
 
 #### KeyCloak Addon
 
