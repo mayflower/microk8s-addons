@@ -5,6 +5,7 @@ Please regard this repository as development only, all mature software is going 
 
 This repository contains 4 addons:
 
+  * spin, a framework for building and running event-driven microservice applications with WebAssembly
   * istio, a copy of the existing plugin with an updated version 
   * redis, a simple redis addon based on bitnamis helm chart, needed for dapr
   * dapr, a platform agnostic event driven application runtime for microservices
