@@ -5,6 +5,7 @@ Please regard this repository as development only, all mature software is going 
 
 This repository contains 4 addons:
 
+  * spin, a framework for building and running event-driven microservice applications with WebAssembly
   * istio, a copy of the existing plugin with an updated version 
   * redis, a simple redis addon based on bitnamis helm chart, needed for dapr
   * dapr, a platform agnostic event driven application runtime for microservices
@@ -21,6 +22,29 @@ To use the addons provided by this repository please add it to your current micr
 microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/
 ```
 
+#### Spin / Wasm Addon
+
+This addon installs support for [Spin](https://spin.fermyon.dev/)
+
+> Spin is a framework for building and running event-driven microservice applications with
+> WebAssembly (Wasm) components. With Spin, we’re trying to make it easier to get started 
+> with using WebAssembly on the server so that we can all take advantage of the security, 
+> portability, and speed WebAssembly provides when it comes to running microservices.	
+
+This addon provides a simple way to make your first steps with web assembly payloads. 
+
+You can enable Spin support with 
+```
+microk8s enable spin
+```
+
+The spin module includes a wrapper for [wasm-to-oci](https://github.com/engineerd/wasm-to-oci), that can be used 
+to push WebAssembly modules to the microk8s registry: 
+```
+microk8s enable registry 
+microk8s wasm-to-oci push ./spin_hello_world.wasm localhost:32000/spin-hello-world:registry
+```
+
 #### KeyCloak Addon
 
 This addon installs [KeyCloak](https://www.keycloak.org/)
@@ -29,9 +53,9 @@ This addon installs [KeyCloak](https://www.keycloak.org/)
 > No need to deal with storing users or authenticating users.
 > Keycloak provides user federation, strong authentication, user management, fine-grained authorization, and more.
 
-This addon provides a simple way to provide KeyClak within your microk8s setup.
+This addon provides a simple way to use KeyClak within your microk8s setup.
 
-You can enable Redis support with:
+You can enable Keycloak support with:
 ```
 microk8s enable mayflower/keycloak
 ```

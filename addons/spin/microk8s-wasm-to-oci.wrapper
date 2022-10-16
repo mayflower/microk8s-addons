@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -eu
+
+export PATH="$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:$PATH"
+
+if [ ! -f "${SNAP_DATA}/bin/wasm-to-oci" ]; then
+  echo "wasm-to-oci not available, try enabling is with 'microk8s enable spin'"
+  exit 0
+fi
+
+source $SNAP/actions/common/utils.sh
+
+if echo "$*" | grep -v -q -- '--kubeconfig'; then
+  exit_if_no_permissions
+fi
+
+if ! [ "${SNAP_ARCH}" == "amd64" ] && ! [ "${SNAP_ARCH}" = "arm64" ]
+then
+  echo "wasm-to-oci is not available for ${SNAP_ARCH}"
+else
+  exit_if_stopped
+  "${SNAP_DATA}/bin/wasm-to-oci" "$@"
+fi
+
