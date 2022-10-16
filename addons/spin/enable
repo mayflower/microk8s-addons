@@ -52,7 +52,7 @@ then
   echo "Fetching https://github.com/mayflower/wasm-to-oci/releases/download/${WASM_TO_OCI_VERSION}/linux-${SNAP_ARCH}-wasm-to-oci"
   fetch_as "https://github.com/mayflower/wasm-to-oci/releases/download/${WASM_TO_OCI_VERSION}/linux-${SNAP_ARCH}-wasm-to-oci" "$SNAP_DATA/tmp/wasm_to_oci/wasm-to-oci"
   run_with_sudo mv "$SNAP_DATA/tmp/wasm_to_oci/wasm-to-oci" "$SNAP_DATA/bin/"
-  run_with_sudo chmod +x "$SNAP_DATA/bin/"
+  run_with_sudo chmod +x "$SNAP_DATA/bin/wasm-to-oci"
   run_with_sudo cp $(dirname "$0")/microk8s-wasm-to-oci.wrapper $SNAP_COMMON/plugins/wasm-to-oci)
   echo "Wrapper installed to $SNAP_COMMON/plugin/wasm-to-oci"
   run_with_sudo rm -rf "$SNAP_DATA/tmp/wasm_to_oci"
