@@ -6,15 +6,17 @@ source $SNAP/actions/common/utils.sh
 
 SHIM_BINARY="containerd-shim-spin-v1"
 SHIM_PATH="${SNAP_DATA}/plugin/${SHIM_BINARY}"
+SHIM_VERSION="v0.3.0"
+
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
 echo "Enabling spin"
 
+# Install shim binary 
+
 if [ ! -f "${SNAP_DATA}/bin/${SHIM_BINARY}" ]
 then
-  SHIM_VERSION="v0.3.0"
-
   if [ $SNAP_ARCH == "arm64" ]; then
     SHIM_ARCH="aarch64"
   elif [ $SNAP_ARCH == "amd64" ]; then
@@ -38,11 +40,21 @@ fi
 
 "$SNAP/microk8s-enable.wrapper" dns
 
+# Add path to containerd environment
+CONTAINERD_ENV="${SNAP_DATA}/args/containerd-env"
+if ! grep -q "SPIN_PATH" "${CONTAINERD_ENV}"; then
+  echo "Add Spin Path (${SHIM_PATH})to containerd environment"
+  run_with_sudo echo "# spin start\nSPIN_PATH=\"${SNAP_DATA}/bin\"\nPATH=\$PATH:\$SPIN_PATH\n# spin end\n" >> "${CONTAINERD_ENV}"
+else
+  echo "Spin path already in containerd environment"
+fi
+
 # Add spin runtime to containerd-template.toml 
+
 CONTAINERD_TEMPLATE="${SNAP_DATA}/args/containerd-template.toml"
 if ! grep -q "spin" "${CONTAINERD_TEMPLATE}"; then
   echo "Adding plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin to containerd configuration"
-  run_with_sudo sed -i "/plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.*/i\\# spin start\\n\\        [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.spin]\\n\\          runtime_type = \"io.containerd.spin.v1\"\\n\\n\\          [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.spin.options]\\n\\            BinaryName = \"${SNAP_DATA}/bin/${SHIM_BINARY}\"\\n# spin end\\n" "${CONTAINERD_TEMPLATE}"
+  run_with_sudo sed -i "/plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.*/i\\# spin start\\n\\        [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.spin]\\n\\          runtime_type = \"io.containerd.spin.v1\"\\n\\n\\          [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.spin.options]\\n\\            BinaryName = \"${SHIM_BINARY}\"\\n# spin end\\n" "${CONTAINERD_TEMPLATE}"
 
   run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
 else
