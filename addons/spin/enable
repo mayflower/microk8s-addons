@@ -7,6 +7,7 @@ source $SNAP/actions/common/utils.sh
 SHIM_BINARY="containerd-shim-spin-v1"
 SHIM_PATH="${SNAP_DATA}/plugin/${SHIM_BINARY}"
 SHIM_VERSION="v0.3.0"
+WASM_TO_OCI_VERSION="v0.1.2"
 
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
@@ -36,6 +37,25 @@ then
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
   run_with_sudo mv "$SNAP_DATA/tmp/spin/${SHIM_BINARY}"  "$SNAP_DATA/bin/"
   run_with_sudo rm -rf "$SNAP_DATA/tmp/spin"
+fi
+
+# Install wasm-to-oci to support wasm upload to the local registry 
+if [ ! -f "{SNAP_DATA}/bin/wasm-to-oci" ]
+then
+  if ! [ $SNAP_ARCH == "arm64" ] && ! [ $SNAP_ARCH == "amd64" ]; then
+    echo "Architecture $ARCH not supported"
+    exit 1
+  fi
+  echo "Fetching wasm-to-oci version $WASM_TO_OCI_VERSION for $SNAP_ARCH."
+  run_with_sudo mkdir -p "${SNAP_DATA}/tmp/wasm_to_oci"
+  (cd "${SNAP_DATA}/tmp/wasm_to_oci"
+  echo "Fetching https://github.com/mayflower/wasm-to-oci/releases/download/${WASM_TO_OCI_VERSION}/linux-${SNAP_ARCH}-wasm-to-oci"
+  fetch_as "https://github.com/mayflower/wasm-to-oci/releases/download/${WASM_TO_OCI_VERSION}/linux-${SNAP_ARCH}-wasm-to-oci" "$SNAP_DATA/tmp/wasm_to_oci/wasm-to-oci"
+  run_with_sudo mv "$SNAP_DATA/tmp/wasm_to_oci/wasm-to-oci" "$SNAP_DATA/bin/"
+  run_with_sudo chmod +x "$SNAP_DATA/bin/"
+  run_with_sudo cp $(dirname "$0")/microk8s-wasm-to-oci.wrapper $SNAP_COMMON/plugins/wasm-to-oci)
+  echo "Wrapper installed to $SNAP_COMMON/plugin/wasm-to-oci"
+  run_with_sudo rm -rf "$SNAP_DATA/tmp/wasm_to_oci"
 fi
 
 "$SNAP/microk8s-enable.wrapper" dns
