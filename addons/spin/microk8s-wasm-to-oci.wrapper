@@ -4,7 +4,7 @@ set -eu
 
 export PATH="$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:$PATH"
 
-if [ ! -f "${SNAP_DATA}/plugin/wasm-to-oci" ]; then
+if [ ! -f "${SNAP_DATA}/bin/wasm-to-oci" ]; then
   echo "wasm-to-oci not available, try enabling is with 'microk8s enable spin'"
   exit 0
 fi
@@ -20,6 +20,6 @@ then
   echo "wasm-to-oci is not available for ${SNAP_ARCH}"
 else
   exit_if_stopped
-  "${SNAP_DATA}/plugin/wasm-to-oci" "$@"
+  "${SNAP_DATA}/bin/wasm-to-oci" "$@"
 fi
 
