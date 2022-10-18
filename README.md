@@ -5,14 +5,14 @@ Please regard this repository as development only, all mature software is going 
 
 This repository contains 4 addons:
 
-* spin, a framework for building and running event-driven microservice applications with WebAssembly
-* istio, a copy of the existing plugin with an updated version 
-* redis, a simple redis addon based on bitnamis helm chart, needed for dapr
-* dapr, a platform agnostic event driven application runtime for microservices
-* kubevela, an application centric sofftware delivery platform based on the OAM standard
-* keycloak, a service for user federation, strong authentication, user management, fine-grained authorizatio
-* kubeview, a Kubernetes cluster visualiser and visual explorer
-* postgresql, an open source object-relational database known for reliability and data integrity
+* **spin**, a framework for building and running event-driven microservice applications with WebAssembly
+* **istio**, a copy of the existing plugin with an updated version 
+* **redis**, a simple redis addon based on bitnamis helm chart, needed for dapr
+* **dapr**, a platform agnostic event driven application runtime for microservices
+* **kubevela**, an application centric sofftware delivery platform based on the OAM standard
+* **keycloak**, a service for user federation, strong authentication, user management, fine-grained authorizatio
+* **kubeview**, a Kubernetes cluster visualiser and visual explorer
+* **postgresql**, an open source object-relational database known for reliability and data integrity
 
 ### Addons
 
@@ -316,8 +316,6 @@ curl http://localhost:8080/order
 ```
 
 You should see the latest JSON in response!
-
-
 
 #### The KubeVela Addon
 
