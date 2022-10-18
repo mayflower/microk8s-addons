@@ -13,6 +13,7 @@ This repository contains 4 addons:
 * **keycloak**, a service for user federation, strong authentication, user management, fine-grained authorizatio
 * **kubeview**, a Kubernetes cluster visualiser and visual explorer
 * **postgresql**, an open source object-relational database known for reliability and data integrity
+* **nocalhost**, a cloud-native development tool based on IDE
 
 ### Addons
 

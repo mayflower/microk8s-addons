@@ -55,3 +55,10 @@ microk8s-addons:
       supported_architectures:
         - amd64
         - arm64
+    - name: "nocalhost"
+      description: "Nocalhost is a cloud-native development tool based on IDE"
+      version: "latest/stable"
+      check_status: "pod/nocalhost"
+      supported_architectures:
+        - amd64
+        - arm64
