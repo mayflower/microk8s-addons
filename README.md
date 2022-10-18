@@ -5,19 +5,19 @@ Please regard this repository as development only, all mature software is going 
 
 This repository contains 4 addons:
 
-  * spin, a framework for building and running event-driven microservice applications with WebAssembly
-  * istio, a copy of the existing plugin with an updated version 
-  * redis, a simple redis addon based on bitnamis helm chart, needed for dapr
-  * dapr, a platform agnostic event driven application runtime for microservices
-  * kubevela, an application centric sofftware delivery platform based on the OAM standard
-  * keycloak, a service for user federation, strong authentication, user management, fine-grained authorizatio
-  * kubeview, a Kubernetes cluster visualiser and visual explorer
-  * postgresql, an open source object-relational database known for reliability and data integrity
-
+* spin, a framework for building and running event-driven microservice applications with WebAssembly
+* istio, a copy of the existing plugin with an updated version 
+* redis, a simple redis addon based on bitnamis helm chart, needed for dapr
+* dapr, a platform agnostic event driven application runtime for microservices
+* kubevela, an application centric sofftware delivery platform based on the OAM standard
+* keycloak, a service for user federation, strong authentication, user management, fine-grained authorizatio
+* kubeview, a Kubernetes cluster visualiser and visual explorer
+* postgresql, an open source object-relational database known for reliability and data integrity
 
 ### Addons
 
 To use the addons provided by this repository please add it to your current microk8s setup:
+
 ```
 microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/
 ```
@@ -29,17 +29,19 @@ This addon installs support for [Spin](https://spin.fermyon.dev/)
 > Spin is a framework for building and running event-driven microservice applications with
 > WebAssembly (Wasm) components. With Spin, we’re trying to make it easier to get started 
 > with using WebAssembly on the server so that we can all take advantage of the security, 
-> portability, and speed WebAssembly provides when it comes to running microservices.	
+> portability, and speed WebAssembly provides when it comes to running microservices.    
 
 This addon provides a simple way to make your first steps with web assembly payloads. 
 
 You can enable Spin support with 
+
 ```
 microk8s enable spin
 ```
 
 The spin module includes a wrapper for [wasm-to-oci](https://github.com/engineerd/wasm-to-oci), that can be used 
 to push WebAssembly modules to the microk8s registry: 
+
 ```
 microk8s enable registry 
 microk8s wasm-to-oci push ./spin_hello_world.wasm localhost:32000/spin-hello-world:registry
@@ -56,10 +58,13 @@ This addon installs [KeyCloak](https://www.keycloak.org/)
 This addon provides a simple way to use KeyClak within your microk8s setup.
 
 You can enable Keycloak support with:
+
 ```
 microk8s enable mayflower/keycloak
 ```
+
 Please note that this addon is based on the bitnami helm chart and supports a number of additional parameters that can be found [here](https://artifacthub.io/packages/helm/bitnami/keycloak):
+
 ```
 microk8s enable mayflower/keycloak --set  --set auth.adminPassword=secretpassword
 ```
@@ -73,10 +78,13 @@ This addon installs [Redis](https://redis.io/):
 This addon is meant as a support for the dapr addon, that relies on redis as state and configuration storage as well as message broker. 
 However, it can be used on its own whenevery you need redis within your microk8s setup. 
 You can enable Redis support with:
+
 ```
 microk8s enable mayflower/redis
 ```
+
 Please note that this addon is based on the bitnami helm chart and supports a number of additional parameters that can be found [here](https://artifacthub.io/packages/helm/bitnami/redis):
+
 ```
 microk8s enable mayflower/redis --set auth.password=secretpassword
 ```
@@ -87,33 +95,36 @@ This addon installs [PostgreSQL](https://www.postgresql.org/):
 
 > PostgreSQL is a powerful, open source object-relational database system with over 30 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance.
 
-
 This addon provides a simple way to provide a PostgreSQL database within your microk8s setup.
 
 You can enable postgresql support with:
+
 ```
 microk8s enable postgresql
 ```
+
 Please note that this addon is based on the bitnami helm chart and supports a number of additional parameters that can be found [here](https://artifacthub.io/packages/helm/bitnami/postgresql):
+
 ```
 microk8s enable mayflower/postgresql --set auth.postgresPassword=secretpassword
 ```
 
 #### KubeView Addon
 
-
 This addon installs [KubeView](https://kubeview.benco.io/):
 
 > KubeView displays what is happening inside a Kubernetes cluster (or single namespace), it maps out the API objects and how they are interconnected. Data is fetched real-time from the Kubernetes API. The status of some objects (Pods, ReplicaSets, Deployments) is colour coded red/green to represent their status and health
 
-
 This addon provides a nice overview what is going on in your microk8s.
 
 You can enable postgresql support with:
+
 ```
 microk8s enable kubeview
 ```
+
 Please note that this addon is based on the official helm chart and supports a number of additional parameters that can be found [here](https://kubeview.benco.io/):
+
 ```
 microk8s enable mayflower/kubeview --set ingress.enabled=true
 ```
@@ -125,56 +136,216 @@ This addon installs [Istio](https://istio.io):
 > Istio extends Kubernetes to establish a programmable, application-aware network using the powerful Envoy service proxy. Working with both Kubernetes and traditional workloads, Istio brings standard, universal traffic management, telemetry, and security to complex deployments.
 
 You can enable Istio support with:
+
 ```
 microk8s enable mayflower/istio
 ```
 
 This addon uses the command line client istioctl to install Istio. 
 It is provided as a plugin within microk8s and can be used for administration tasks:
+
 ```
 microk8s istioctl verify-install
 ```
+
 #### The Dapr Addon
 
 This addon installs https://dapr.io/:
+
 > The Distributed Application Runtime (Dapr) provides APIs that simplify microservice connectivity. Whether your communication pattern is service to service invocation or pub/sub messaging, Dapr helps you write resilient and secured microservices.
 > By letting Dapr’s sidecar take care of the complex challenges such as service discovery, message broker integration, encryption, observability, and secret management, you can focus on business logic and keep your code simple.
 
 It provides a simple dapr setup including state management, publish and subscribe messaging and configuration management based on the redis addon. 
 
 You can enable Dapr support with:
+
 ```
 microk8s enable dapr 
 ```
 
 This addon installs the dapr command line client as a MicroK8s plugin. 
+
 ```
-microk8s dapr version
+microk8s dapr
 ```
+
+The Dapr Addon automatically installs the redis addon and configures it as a statestore, a configstore and pubsub component for dapr in microk8s. 
+
+##### Dapr Example
+
+This example uses the [hello-kubernetes quickstart]([quickstarts/tutorials/hello-kubernetes at master · dapr/quickstarts · GitHub](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes)) provided by dapr here. 
+
+Clone the repository and cd into the kubernetes example: 
+
+```
+git clone https://github.com/dapr/quickstarts.git
+cd quickstarts/tutorials/hello-kubernetes
+```
+
+##### Deploy the Node.js app with the Dapr sidecar
+
+```shell
+microk8s kubectl apply -f ./deploy/node.yaml
+```
+
+Kubernetes deployments are asyncronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following command:
+
+```shell
+microk8s kubectl rollout status deploy/nodeapp
+```
+
+This will deploy the Node.js app to Kubernetes. The Dapr control plane will automatically inject the Dapr sidecar to the Pod. If you take a look at the `node.yaml` file, you will see how Dapr is enabled for that deployment:
+
+`dapr.io/enabled: true` - this tells the Dapr control plane to inject a sidecar to this deployment.
+
+`dapr.io/app-id: nodeapp` - this assigns a unique id or name to the Dapr application, so it can be sent messages to and communicated with by other Dapr apps.
+
+`dapr.io/enable-api-logging: "true"` - this is added to node.yaml file by default to see the API logs.
+
+##### Verify Service
+
+You can check the service using a port forward.
+
+```shell
+microk8s kubectl port-forward service/nodeapp 8080:80
+```
+
+This will make your service available on [http://localhost:8080](http://localhost:8080/).
+
+To call the service that you set up port forwarding to, from a command prompt run:
+
+```shell
+curl http://localhost:8080/ports
+```
+
+Expected output:
+
+```
+{"DAPR_HTTP_PORT":"3500","DAPR_GRPC_PORT":"50001"}
+```
+
+Next submit an order to the app
+
+```shell
+curl --request POST --data "@sample.json" --header Content-Type:application/json http://localhost:8080/neworder
+```
+
+Expected output: Empty reply from server
+
+Confirm the order was persisted by requesting it from the app
+
+```shell
+curl http://localhost:8080/order
+```
+
+Expected output:
+
+```json
+{ "orderId": "42" }
+```
+
+##### Dapr Dashboard
+
+Dapr provides a dashboard as a convenient interface to check status, information and logs of applications running on Dapr. The following command will make it available on [http://localhost:9999/](http://localhost:9999/).
+
+```shell
+microk8s dapr dashboard -k -p 9999
+```
+
+##### Deploy the Python app with the Dapr Sidecar
+
+Next, take a quick look at the Python app. Navigate to the Python app in the kubernetes quickstart: `cd quickstarts/tutorials/hello-kubernetes/python` and open `app.py`.
+
+At a quick glance, this is a basic Python app that posts JSON messages to `localhost:3500`, which is the default listening port for Dapr. You can invoke the Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. The message contains some `data` with an orderId that increments once per second:
+
+```python
+n = 0
+while True:    n += 1
+    message = {"data": {"orderId": n}}    try:        response = requests.post(dapr_url, json=message)    except Exception as e:        print(e)    time.sleep(1)
+```
+
+Deploy the Python app to your Kubernetes cluster:
+
+```shell
+microk8s kubectl apply -f ./deploy/python.yaml
+```
+
+As with above, the following command will wait for the deployment to complete:
+
+```shell
+microk8s kubectl rollout status deploy/pythonapp
+```
+
+##### Observe Messages
+
+Get the logs of the Node.js app:
+
+```shell
+microk8s kubectl logs --selector=app=node -c node --tail=-1
+```
+
+If all went well, you should see logs like this:
+
+```
+Got a new order! Order ID: 1
+Successfully persisted state
+Got a new order! Order ID: 2
+Successfully persisted state
+Got a new order! Order ID: 3
+Successfully persisted state
+```
+
+Get the API call logs of the Python app:
+
+```shell
+microk8s kubectl logs --selector=app=python -c daprd --tail=-1
+```
+
+```
+time="2022-04-27T02:47:49.972688145Z" level=info msg="HTTP API Called: POST /neworder" app_id=pythonapp instance=pythonapp-545df48d55-jvj52 scope=dapr.runtime.http-info type=log ver=1.7.2
+time="2022-04-27T02:47:50.984994545Z" level=info msg="HTTP API Called: POST /neworder" app_id=pythonapp instance=pythonapp-545df48d55-jvj52 scope=dapr.runtime.http-info type=log ver=1.7.2
+```
+
+##### Confirm successful persistence
+
+Call the Node.js app's order endpoint to get the latest order. Grab the external IP address that you saved before and, append "/order" and perform a GET request against it (enter it into your browser, use Postman, or curl it!):
+
+```
+curl http://localhost:8080/order
+{"orderID":"42"}
+```
+
+You should see the latest JSON in response!
+
+
 
 #### The KubeVela Addon
 
 This addon installs [KubeVela](https://kubevela.io):
+
 > KubeVela is a modern software delivery platform that makes deploying and operating applications across today's hybrid, multi-cloud environments easier, faster and more reliable.
 > KubeVela is infrastructure agnostic, programmable, yet most importantly, application-centric. It allows you to build powerful software, and deliver them anywhere!
 
 It provides KubeVela with VelaUX (the web ui for KubeVela).
 
 You can enable KubeVela support with:
+
 ```
 microk8s enable kubevela
 ```
 
 This addon install the vela command line client as a microk8s plugin.
+
 ```
 microk8s vela version
 ```
 
-
 ### How to use this addons repository
 
 #### Adding repositories
+
 3rd party addons repositories are supported on MicroK8s v1.24 and onwards. To add a repository on an already installed MicroK8s you have to use the `microk8s addons repo` command and provide a user friendly repo name, the path to the repository and optionally a branch within the repository. For this repository:
+
 ```
 microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/ --reference main
 ```
@@ -187,10 +358,10 @@ The addons of all repositories are shown in `microk8s status` along with the rep
 microk8s enable mayflower/redis
 ```
 
-
 #### Refreshing repositories
 
 Adding a repository to MicroK8s (via `mcirok8s addons repo add`) creates a copy of the repository under `$SNAP_COMMON/addons` (typically under `/var/snap/microk8s/common/addons/`). Authorized users are able to edit the addons to match their need. In case the upstream repository changes and you need to pull in any updates with:
+
 ```
 microk8s addons repo update mayflower
 ```
@@ -198,10 +369,10 @@ microk8s addons repo update mayflower
 #### Removing repositories
 
 Removing repositories is done with:
+
 ```
 microk8s addons repo remove mayflower
 ```
-
 
 ### Repository structure
 
