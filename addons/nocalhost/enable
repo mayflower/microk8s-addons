@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+set -eu
+
+source "$SNAP/actions/common/utils.sh"
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+NOCALHOST_NS="NOCALHOST_NS"
+
+"$SNAP/microk8s-enable.wrapper" dns
+"$SNAP/microk8s-enable.wrapper" helm3
+
+# make sure the "nocalhost" namespace exist
+$KUBECTL create namespace "$NOCALHOST_NS" > /dev/null 2>&1 || true
+
+$HELM repo add nocalhost "https://nocalhost-helm.pkg.coding.net/nocalhost/nocalhost"
+$HELM repo update
+$HELM -n $NOCALHOST_NS install nocalhost nocalhost/nocalhost
+
+echo "Installing nocalhost cli (nhctl)"
+
+if [ ! -f "${SNAP_DATA}/bin/nhctl" ]
+then
+  NOCALHOST_VERSION="v0.6.18"
+
+  if ! [ $SNAP_ARCH == "arm64" ] && ! [ $SNAP_ARCH == "amd64" ]; then
+    echo "Architecture $ARCH not supported"
+    exit 1
+  fi
+  echo "Fetching Nocalhost CLI version $NOCALHOST_VERSION for $SNAP_ARCH."
+  run_with_sudo mkdir -p "${SNAP_DATA}/tmp/nocalhost"
+  (cd "${SNAP_DATA}/tmp/nocalhost"
+  echo "Fetching  https://github.com/nocalhost/nocalhost/releases/download/${NOCALHOST_VERSION}/nhctl-linux-${SNAP_ARCH}"
+  fetch_as "https://github.com/nocalhost/nocalhost/releases/download/${NOCALHOST_VERSION}/nhctl-linux-${SNAP_ARCH}" "$SNAP_DATA/tmp/nocalhost/nhctl"
+  run_with_sudo mkdir -p "$SNAP_DATA/bin/"
+  run_with_sudo mv "$SNAP_DATA/tmp/nocalhost/nhctl" "$SNAP_DATA/bin/"
+  run_with_sudo chmod +x "$SNAP_DATA/bin/nhctl"
+  run_with_sudo cp $(dirname "$0")/microk8s-nhctl.wrapper $SNAP_COMMON/plugins/nhctl)
+  echo "Wrapper installed to $SNAP_COMMON/plugin/nhctl"
+  run_with_sudo rm -rf "$SNAP_DATA/tmp/nocalhost"
+fi
+
+echo "Nocalhost has been installed"
