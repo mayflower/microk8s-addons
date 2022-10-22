@@ -15,7 +15,6 @@ then
     exit 1
   fi
 
-
   echo "Fetching KubeVela CLI version $VELA_VERSION for $SNAP_ARCH."
   run_with_sudo mkdir -p "${SNAP_DATA}/tmp/vela"
   (cd "${SNAP_DATA}/tmp/vela"
@@ -41,7 +40,9 @@ else
   echo "Installing KubeVela with default settings"
   KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/kubectl-vela install -y
 fi
-"${SNAP_COMMON}/plugins/vela" addon enable velaux
+
+KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/kubectl-vela addon enable velaux -y
+
 
 run_with_sudo touch "$SNAP_USER_COMMON/vela.lock"
 
