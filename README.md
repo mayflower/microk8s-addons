@@ -1,4 +1,4 @@
-## Mayflower MicroK8s Addon Repository
+# Mayflower MicroK8s Addon Repository
 
 This is our repository for MicroK8s addons we like to use. Obviously we would like to transfer them to the official [MicroK8s Community Repository](https://github.com/canonical/microk8s-community-addons/) when they are in a proper state, including tests and documentation. 
 Please regard this repository as development only, all mature software is going to be moved to the community repository. 
@@ -13,8 +13,9 @@ This repository contains 4 addons:
 * **keycloak**, a service for user federation, strong authentication, user management, fine-grained authorizatio
 * **kubeview**, a Kubernetes cluster visualiser and visual explorer
 * **postgresql**, an open source object-relational database known for reliability and data integrity
+* **nocalhost**, a cloud-native development tool based on IDE
 
-### Addons
+## Addons
 
 To use the addons provided by this repository please add it to your current microk8s setup:
 
@@ -22,7 +23,21 @@ To use the addons provided by this repository please add it to your current micr
 microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/
 ```
 
-#### Spin / Wasm Addon
+### Nocalhost
+
+This addon provides support for (Nocalhost)[https://nocalhost/]
+
+> Nocalhost is an open-source IDE plugin for cloud-native applications development:
+> 
+> * Build, test and debug applications directly inside Kubernetes
+> 
+> * IDE Support : providing the same debugging and developing experience you're used in the IDE even in the remote Kubernetes cluster
+> 
+> * Developing with instant file synchronization: instantly sync your code change to remote container without rebuilding images or restarting containers.
+
+This addon installs nocalhost into your microk8s cluster and provides the nhctl command line Interface. 
+
+### Spin / Wasm Addon
 
 This addon installs support for [Spin](https://spin.fermyon.dev/)
 
@@ -47,7 +62,7 @@ microk8s enable registry
 microk8s wasm-to-oci push ./spin_hello_world.wasm localhost:32000/spin-hello-world:registry
 ```
 
-#### KeyCloak Addon
+### KeyCloak Addon
 
 This addon installs [KeyCloak](https://www.keycloak.org/)
 
@@ -69,7 +84,7 @@ Please note that this addon is based on the bitnami helm chart and supports a nu
 microk8s enable mayflower/keycloak --set  --set auth.adminPassword=secretpassword
 ```
 
-#### The Redis Addon
+### The Redis Addon
 
 This addon installs [Redis](https://redis.io/):
 
@@ -89,7 +104,7 @@ Please note that this addon is based on the bitnami helm chart and supports a nu
 microk8s enable mayflower/redis --set auth.password=secretpassword
 ```
 
-#### The PostgreSQL Addon
+### The PostgreSQL Addon
 
 This addon installs [PostgreSQL](https://www.postgresql.org/):
 
@@ -109,7 +124,7 @@ Please note that this addon is based on the bitnami helm chart and supports a nu
 microk8s enable mayflower/postgresql --set auth.postgresPassword=secretpassword
 ```
 
-#### KubeView Addon
+### KubeView Addon
 
 This addon installs [KubeView](https://kubeview.benco.io/):
 
@@ -129,7 +144,7 @@ Please note that this addon is based on the official helm chart and supports a n
 microk8s enable mayflower/kubeview --set ingress.enabled=true
 ```
 
-#### The Istio Addon
+### The Istio Addon
 
 This addon installs [Istio](https://istio.io):
 
@@ -148,7 +163,7 @@ It is provided as a plugin within microk8s and can be used for administration ta
 microk8s istioctl verify-install
 ```
 
-#### The Dapr Addon
+### The Dapr Addon
 
 This addon installs https://dapr.io/:
 
@@ -171,7 +186,7 @@ microk8s dapr
 
 The Dapr Addon automatically installs the redis addon and configures it as a statestore, a configstore and pubsub component for dapr in microk8s. 
 
-##### Dapr Example
+#### Dapr Example
 
 This example uses the [hello-kubernetes quickstart]([quickstarts/tutorials/hello-kubernetes at master · dapr/quickstarts · GitHub](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes)) provided by dapr here. 
 
@@ -182,7 +197,7 @@ git clone https://github.com/dapr/quickstarts.git
 cd quickstarts/tutorials/hello-kubernetes
 ```
 
-##### Deploy the Node.js app with the Dapr sidecar
+#### Deploy the Node.js app with the Dapr sidecar
 
 ```shell
 microk8s kubectl apply -f ./deploy/node.yaml
@@ -202,7 +217,7 @@ This will deploy the Node.js app to Kubernetes. The Dapr control plane will auto
 
 `dapr.io/enable-api-logging: "true"` - this is added to node.yaml file by default to see the API logs.
 
-##### Verify Service
+#### Verify Service
 
 You can check the service using a port forward.
 
@@ -244,7 +259,7 @@ Expected output:
 { "orderId": "42" }
 ```
 
-##### Dapr Dashboard
+#### Dapr Dashboard
 
 Dapr provides a dashboard as a convenient interface to check status, information and logs of applications running on Dapr. The following command will make it available on [http://localhost:9999/](http://localhost:9999/).
 
@@ -252,7 +267,7 @@ Dapr provides a dashboard as a convenient interface to check status, information
 microk8s dapr dashboard -k -p 9999
 ```
 
-##### Deploy the Python app with the Dapr Sidecar
+#### Deploy the Python app with the Dapr Sidecar
 
 Next, take a quick look at the Python app. Navigate to the Python app in the kubernetes quickstart: `cd quickstarts/tutorials/hello-kubernetes/python` and open `app.py`.
 
@@ -276,7 +291,7 @@ As with above, the following command will wait for the deployment to complete:
 microk8s kubectl rollout status deploy/pythonapp
 ```
 
-##### Observe Messages
+#### Observe Messages
 
 Get the logs of the Node.js app:
 
@@ -306,7 +321,7 @@ time="2022-04-27T02:47:49.972688145Z" level=info msg="HTTP API Called: POST /new
 time="2022-04-27T02:47:50.984994545Z" level=info msg="HTTP API Called: POST /neworder" app_id=pythonapp instance=pythonapp-545df48d55-jvj52 scope=dapr.runtime.http-info type=log ver=1.7.2
 ```
 
-##### Confirm successful persistence
+#### Confirm successful persistence
 
 Call the Node.js app's order endpoint to get the latest order. Grab the external IP address that you saved before and, append "/order" and perform a GET request against it (enter it into your browser, use Postman, or curl it!):
 
@@ -317,7 +332,7 @@ curl http://localhost:8080/order
 
 You should see the latest JSON in response!
 
-#### The KubeVela Addon
+### The KubeVela Addon
 
 This addon installs [KubeVela](https://kubevela.io):
 
@@ -338,9 +353,17 @@ This addon install the vela command line client as a microk8s plugin.
 microk8s vela version
 ```
 
-### How to use this addons repository
+Vela can be used with the velaux dashboard. 
 
-#### Adding repositories
+```shell
+ microk8s vela port-forward -n vela-system addon-velaux 9082:80
+```
+
+
+
+## How to use this addons repository
+
+### Adding repositories
 
 3rd party addons repositories are supported on MicroK8s v1.24 and onwards. To add a repository on an already installed MicroK8s you have to use the `microk8s addons repo` command and provide a user friendly repo name, the path to the repository and optionally a branch within the repository. For this repository:
 
@@ -348,7 +371,7 @@ microk8s vela version
 microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/ --reference main
 ```
 
-#### Enabling/disabling addons
+### Enabling/disabling addons
 
 The addons of all repositories are shown in `microk8s status` along with the repo they came from. `microk8s enable` and `microk8s disable` are used to enable and disable the addons respectively. The repo name can be used to disambiguate between addons with the same name. For example:
 
@@ -356,15 +379,15 @@ The addons of all repositories are shown in `microk8s status` along with the rep
 microk8s enable mayflower/redis
 ```
 
-#### Refreshing repositories
+### Refreshing repositories
 
-Adding a repository to MicroK8s (via `mcirok8s addons repo add`) creates a copy of the repository under `$SNAP_COMMON/addons` (typically under `/var/snap/microk8s/common/addons/`). Authorized users are able to edit the addons to match their need. In case the upstream repository changes and you need to pull in any updates with:
+Adding a repository to MicroK8s (via `microk8s addons repo add`) creates a copy of the repository under `$SNAP_COMMON/addons` (typically under `/var/snap/microk8s/common/addons/`). Authorized users are able to edit the addons to match their need. In case the upstream repository changes and you need to pull in any updates with:
 
 ```
 microk8s addons repo update mayflower
 ```
 
-#### Removing repositories
+### Removing repositories
 
 Removing repositories is done with:
 
@@ -372,7 +395,7 @@ Removing repositories is done with:
 microk8s addons repo remove mayflower
 ```
 
-### Repository structure
+## Repository structure
 
 An addons repository has the following structure:
 
