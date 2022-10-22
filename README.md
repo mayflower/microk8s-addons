@@ -188,7 +188,7 @@ The Dapr Addon automatically installs the redis addon and configures it as a sta
 
 #### Dapr Example
 
-This example uses the [hello-kubernetes quickstart]([quickstarts/tutorials/hello-kubernetes at master · dapr/quickstarts · GitHub](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes)) provided by dapr here. 
+This example uses the [Dapr hello-kubernetes quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes) provided by dapr here. 
 
 Clone the repository and cd into the kubernetes example: 
 
