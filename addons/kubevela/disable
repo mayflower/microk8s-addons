@@ -7,10 +7,10 @@ KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 
 echo "Disabling KubeVela"
 
-KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/kubectl-vela addon disable -y velaux
+KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/kubectl-vela addon disable -y -f velaux
 
 
-KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/kubectl-vela uninstall -y
+KUBECONFIG=$SNAP_DATA/credentials/client.config $SNAP_DATA/bin/kubectl-vela uninstall -f
 
 run_with_sudo rm -rf "${SNAP_DATA}/bin/kubectl-vela"
 run_with_sudo rm -rf "$SNAP_USER_COMMON/vela.lock"
