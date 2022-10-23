@@ -10,9 +10,10 @@ HELM="$SNAP/microk8s-helm3.wrapper"
 echo "Disabling Dapr"
 
 
+# Delete dapr configuration in default namespace
 
 $KUBECTL delete -f "${CURRENT_DIR}/dapr.yaml" || true
-
+$KUBECTL delete secret redis -n default
 
 $HELM uninstall dapr --namespace dapr-system
 
