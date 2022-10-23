@@ -41,6 +41,9 @@ fi
 $HELM repo add dapr https://dapr.github.io/helm-charts/
 $HELM repo update
 $HELM --namespace dapr-system --create-namespace --wait upgrade --install dapr dapr/dapr
+$KUBECTL create deployment zipkin -n dapr-system --image openzipkin/zipkin
+$KUBECTL expose deployment zipkin -n dapr-system --type ClusterIP --port 9411
+
 "$SNAP/microk8s-status.wrapper" --wait-ready --timeout 30 >/dev/null
 
 # add dapper components to default namespace
