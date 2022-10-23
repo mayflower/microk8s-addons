@@ -51,6 +51,21 @@ spec:
       key: redis-password
 ---
 apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: lock
+spec:
+  type: lock.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: redis-master.redis.svc.cluster.local:6379
+  - name: redisPassword
+    secretKeyRef:
+      name: redis
+      key: redis-password
+---
+apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: tracing
