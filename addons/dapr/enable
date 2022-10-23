@@ -12,7 +12,7 @@ echo "Enabling Dapr"
 
 if [ ! -f "${SNAP_DATA}/bin/dapr" ]
 then
-  DAPR_VERSION="v1.8.1"
+  DAPR_VERSION="v1.9.1"
 
   if ! [ $SNAP_ARCH == "arm64" ] && ! [ $SNAP_ARCH == "amd64" ]; then
     echo "Architecture $ARCH not supported"

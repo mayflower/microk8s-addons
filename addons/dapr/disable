@@ -14,9 +14,10 @@ echo "Disabling Dapr"
 
 $KUBECTL delete -f "${CURRENT_DIR}/dapr.yaml" || true
 $KUBECTL delete secret redis -n default
-$KUBECTL delete deployment zipkin -n dapr-system -f 
+$KUBECTL delete deployment zipkin -n dapr-system 
 
 $HELM uninstall dapr --namespace dapr-system
+
 
 run_with_sudo rm -rf "${SNAP_DATA}/bin/dapr"
 run_with_sudo rm -rf "$SNAP_USER_COMMON/dapr.lock"
