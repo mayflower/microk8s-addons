@@ -21,7 +21,7 @@ then
   if [ $SNAP_ARCH == "arm64" ]; then
     SHIM_ARCH="aarch64"
   elif [ $SNAP_ARCH == "amd64" ]; then
-    SHIM_ARCH="x64_64"
+    SHIM_ARCH="x86_64"
   else 
     echo "Architecture $SNAP_ARCH not supported"
     exit 1
@@ -31,7 +31,7 @@ then
   run_with_sudo mkdir -p "${SNAP_DATA}/tmp/spin"
   cd "${SNAP_DATA}/tmp/spin"
   echo "Fetching https://github.com/deislabs/containerd-wasm-shims/releases/download/${SHIM_VERSION}/containerd-wasm-shims-v1-linux-${SHIM_ARCH}.tar.gz"
-  fetch_as "https://github.com/deislabs/containerd-wasm-shims/releases/download/${SHIM_VERSION}/containerd-wasm-shims-v1-linux-${SHIM_ARCH}.tar.gz" "$SNAP_DATA/tmp/spin/spin.tar.gz"
+  fetch_as      "https://github.com/deislabs/containerd-wasm-shims/releases/download/${SHIM_VERSION}/containerd-wasm-shims-v1-linux-${SHIM_ARCH}.tar.gz" "$SNAP_DATA/tmp/spin/spin.tar.gz"
   run_with_sudo gzip -q -d "$SNAP_DATA/tmp/spin/spin.tar.gz"
   run_with_sudo tar -xvf "$SNAP_DATA/tmp/spin/spin.tar"
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
