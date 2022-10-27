@@ -6,13 +6,13 @@ source $SNAP/actions/common/utils.sh
 
 SHIM_BINARY="containerd-shim-spin-v1"
 SHIM_PATH="${SNAP_DATA}/plugin/${SHIM_BINARY}"
-SHIM_VERSION="v0.3.2"
+SHIM_VERSION="v0.3.3"
 WASM_TO_OCI_VERSION="v0.1.2"
 
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
-echo "Enabling spin"
+echo "Enabling fermyon spin"
 
 # Install shim binary 
 
