@@ -21,7 +21,7 @@ then
   if [ $SNAP_ARCH == "arm64" ]; then
     SHIM_ARCH="aarch64"
   elif [ $SNAP_ARCH == "amd64" ]; then
-    SHIM_ARCH="X64_64"
+    SHIM_ARCH="x64_64"
   else 
     echo "Architecture $SNAP_ARCH not supported"
     exit 1
