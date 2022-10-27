@@ -3,13 +3,14 @@
 set -e
 
 source $SNAP/actions/common/utils.sh
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 
 echo "Disabling Istio"
 
+$KUBECTL delete --wait=true -f https://raw.githubusercontent.com/istio/istio/release-1.15/samples/addons/kiali.yaml
 $SNAP_DATA/bin/istioctl uninstall -c $SNAP_DATA/credentials/client.config --purge -y
 
 run_with_sudo rm -rf "${SNAP_DATA}/bin/istioctl"
 run_with_sudo rm -rf "$SNAP_USER_COMMON/istio.lock"
 run_with_sudo rm -rf "$SNAP_COMMON/plugins/istio"
-
 echo "Istio is terminating"
