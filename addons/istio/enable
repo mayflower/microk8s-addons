@@ -46,7 +46,7 @@ echo "Installing Kiali"
 
 $HELM repo add kiali https://kiali.org/helm-charts
 $HELM repo update
-$HELM install --namespace $ISTIO_NS kiali-server kiali/kiali-server --set auth.strategy=anonymous --set external_services.istio.root_namespace=$ISTIO_NS --set login_token.signing_key="" --set server.web_root=/kiali --set external.services.grafana.enabled=true --set external.services.grafana.in_cluster_url="http://kube-prom-stack-grafana.observability:3000" --set external_services.prometheus.url="http://kube-prom-stack-kube-prome-prometheus.observability:9090"
+# $HELM install --namespace $ISTIO_NS kiali-server kiali/kiali-server --set auth.strategy=anonymous --set external_services.istio.root_namespace=$ISTIO_NS --set login_token.signing_key="" --set server.web_root=/kiali --set external.services.grafana.enabled=true --set external.services.grafana.in_cluster_url="http://kube-prom-stack-grafana.observability:3000" --set external_services.prometheus.url="http://kube-prom-stack-kube-prome-prometheus.observability:9090"
 
 run_with_sudo touch "$SNAP_USER_COMMON/istio.lock"
 
