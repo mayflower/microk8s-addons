@@ -37,10 +37,10 @@ fi
 if [ ! -z "$#"  ]
 then
   echo "Installing Istio"
-  $SNAP_DATA/bin/istioctl install --verify -y -c $SNAP_DATA/credentials/client.config ${ARGUMENTS[@]}
+  $SNAP_DATA/bin/istioctl install --verify --set meshConfig.enableTracing=true -y -c $SNAP_DATA/credentials/client.config ${ARGUMENTS[@]}
 else
   echo "Installing Istio with default settings"
-  $SNAP_DATA/bin/istioctl install --verify -y -c $SNAP_DATA/credentials/client.config
+  $SNAP_DATA/bin/istioctl install --verify --set meshConfig.enableTracing=true -y -c $SNAP_DATA/credentials/client.config
 fi
 echo "Installing Kiali" 
 
