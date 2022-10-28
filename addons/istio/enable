@@ -37,19 +37,19 @@ fi
 if [ ! -z "$#"  ]
 then
   echo "Installing Istio"
-  $SNAP_DATA/bin/istioctl install --verify --set meshConfig.enableTracing=true -y -c $SNAP_DATA/credentials/client.config ${ARGUMENTS[@]}
+  $SNAP_DATA/bin/istioctl install --verify --set profile=demo --set meshConfig.enableTracing=true -y -c $SNAP_DATA/credentials/client.config ${ARGUMENTS[@]}
 else
   echo "Installing Istio with default settings"
-  $SNAP_DATA/bin/istioctl install --verify --set meshConfig.enableTracing=true -y -c $SNAP_DATA/credentials/client.config
+  $SNAP_DATA/bin/istioctl install --verify --set profile=demo --set meshConfig.enableTracing=true -y -c $SNAP_DATA/credentials/client.config
 fi
-echo "Installing Kiali" 
 
-$HELM repo add kiali https://kiali.org/helm-charts
-$HELM repo update
+# echo "Installing Kiali" 
+# $HELM repo add kiali https://kiali.org/helm-charts
+# $HELM repo update
 # $HELM install --namespace $ISTIO_NS kiali-server kiali/kiali-server --set auth.strategy=anonymous --set external_services.istio.root_namespace=$ISTIO_NS --set login_token.signing_key="" --set server.web_root=/kiali --set external.services.grafana.enabled=true --set external.services.grafana.in_cluster_url="http://kube-prom-stack-grafana.observability:3000" --set external_services.prometheus.url="http://kube-prom-stack-kube-prome-prometheus.observability:9090"
 
 run_with_sudo touch "$SNAP_USER_COMMON/istio.lock"
 
 echo "Istio is available now."
 echo ""
-echo "Open kiali dashboard with 'microk8s  istioctl dashboard kiali'"
+# echo "Open kiali dashboard with 'microk8s  istioctl dashboard kiali'"

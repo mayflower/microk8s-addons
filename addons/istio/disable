@@ -7,7 +7,7 @@ KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 HELM="$SNAP/microk8s-helm3.wrapper"
 
 echo "Disabling Istio"
-$HELM uninstall --namespace istio-system kiali-server
+# $HELM uninstall --namespace istio-system kiali-server
 
 $SNAP_DATA/bin/istioctl uninstall -c $SNAP_DATA/credentials/client.config --purge -y
 
