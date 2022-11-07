@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -e
+
+source $SNAP/actions/common/utils.sh
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+
+echo "Enabling Buildkit"
+
+if [ ! -f "${SNAP_DATA}/bin/kubectl-buildkit" ]
+then
+  BUILDKIT_VERSION="v0.1.6"
+
+  if ! [ $SNAP_ARCH == "amd64" ]; then
+    echo "Architecture $ARCH not supported"
+    exit 1
+  fi
+
+
+  echo "Fetching Buildkit CLI version $BUILDKIT_VERSION for $SNAP_ARCH."
+  run_with_sudo mkdir -p "${SNAP_DATA}/tmp/buildkit"
+  (cd "${SNAP_DATA}/tmp/buildkit"
+  fetch_as https://github.com/vmware-tanzu/buildkit-cli-for-kubectl/releases/download/${BUILDKIT_VERSION}/linux_${BUILDKIT_VERSION}.tgz "$SNAP_DATA/tmp/buildkit/buildkit.tar.gz"
+  run_with_sudo gzip -q -d "$SNAP_DATA/tmp/buildkit/buildkit.tar.gz"
+  run_with_sudo tar -xvf "$SNAP_DATA/tmp/buildkit/buildkit.tar"
+  run_with_sudo chmod 777 "$SNAP_DATA/tmp/buildkit/buildkit")
+  run_with_sudo mkdir -p "$SNAP_DATA/bin/"
+  run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-buildkit" "$SNAP_DATA/bin/"
+  run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-build" "$SNAP_DATA/bin/"
+  run_with_sudo chmod +x "$SNAP_DATA/bin/*"
+  run_with_sudo rm -rf "${SNAP_DATA}/tmp/buildkit"
+fi
+
+echo "Buildkit is available"
