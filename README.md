@@ -3,7 +3,7 @@
 This is our repository for MicroK8s addons we like to use. Obviously we would like to transfer them to the official [MicroK8s Community Repository](https://github.com/canonical/microk8s-community-addons/) when they are in a proper state, including tests and documentation. 
 Please regard this repository as development only, all mature software is going to be moved to the community repository. 
 
-This repository contains 4 addons:
+This repository contains 10 addons:
 
 * **spin**, a framework for building and running event-driven microservice applications with WebAssembly
 * **istio**, a copy of the existing plugin with an updated version 
@@ -13,7 +13,8 @@ This repository contains 4 addons:
 * **keycloak**, a service for user federation, strong authentication, user management, fine-grained authorizatio
 * **kubeview**, a Kubernetes cluster visualiser and visual explorer
 * **postgresql**, an open source object-relational database known for reliability and data integrity
-* **nocalhost**, a cloud-native development tool based on IDE
+* **nocalhost**, a cloud-native development tool with integrated IDE support
+* **buildkit**, a tool for building container images with your Kubernetes cluster
 
 ## Addons
 
@@ -22,6 +23,7 @@ To use the addons provided by this repository please add it to your current micr
 ```
 microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/
 ```
+
 
 ### Nocalhost
 
@@ -36,6 +38,26 @@ This addon provides support for (Nocalhost)[https://nocalhost/]
 > * Developing with instant file synchronization: instantly sync your code change to remote container without rebuilding images or restarting containers.
 
 This addon installs nocalhost into your microk8s cluster and provides the nhctl command line Interface. 
+
+
+### Buildkit
+
+This addon installs support for [BuildKit CLI](https://github.com/vmware-tanzu/buildkit-cli-for-kubectl)
+
+> BuildKit CLI for kubectl is a tool for building OCI and Docker images with your kubernetes cluster. 
+> It replaces the docker build command to let you quickly and easily build your single and 
+> multi-architecture container images.
+
+To enable BuildKit CLI support type
+```
+microk8s enable buildkit
+```
+Now two additional commands are available: 
+```
+microk8s kubectl build
+microk8s kubectl buildkit
+```
+
 
 ### Spin / Wasm Addon
 
