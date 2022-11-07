@@ -7,6 +7,8 @@ KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
 echo "Disabling Buildkit"
+KUBECTL_ENV="${SNAP_DATA}/args/kubectl-env"
+run_with_sudo sed -i '/^# buildkit start/,/^# buildkit end/{/#buildkit end/!d}' "${KUBECTL_ENV}"
 
 run_with_sudo rm -rf "${SNAP}/bin/kubectl-buildkit"
 run_with_sudo rm -rf "${SNAP}/bin/kubectl-build"

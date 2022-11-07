@@ -3,7 +3,7 @@
 set -e
 
 source $SNAP/actions/common/utils.sh
-
+KUBECTL_ENV="${SNAP_DATA}/args/kubectl-env"
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
@@ -25,10 +25,19 @@ then
   run_with_sudo gzip -q -d "$SNAP_DATA/tmp/buildkit/buildkit.tar.gz"
   run_with_sudo tar -xvf "$SNAP_DATA/tmp/buildkit/buildkit.tar"
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
-  run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-buildkit" "$SNAP/bin/"
-  run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-build" "$SNAP/bin/"
-  run_with_sudo chmod +x $SNAP/bin/kubectl-build*
+  run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-buildkit" "$SNAP_DATA/bin/"
+  run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-build" "$SNAP_DATA/bin/"
+  run_with_sudo chmod +x $SNAP_DATA/bin/kubectl-build*
   run_with_sudo rm -rf "${SNAP_DATA}/tmp/buildkit"
+
+  # Add path to kubectl environment
+  KUBECTL_ENV="${SNAP_DATA}/args/kubectl-env"
+  if ! grep -q "BUILDKIT_PATH" "${KUBECTL_ENV}"; then
+    echo "Add buildkit Path ($SNAP_DATA/bin)to kubectl environment"
+    run_with_sudo echo -ne "# buildkit start\nBUILDKIT_PATH=\"${SNAP_DATA}/bin\"\nPATH=\$PATH:\$BUILDKIT_PATH\n# buildkit end\n" >> "${KUBECTL_ENV}"
+  else
+    echo "Builkit path already in containerd environment"
+  fi
 fi
 
 echo "Buildkit is available"
