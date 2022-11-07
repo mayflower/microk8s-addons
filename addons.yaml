@@ -55,3 +55,10 @@ microk8s-addons:
       supported_architectures:
         - amd64
         - arm64
+    - name: "buildkit"
+      description: "A kubernetes based drop in replacement for docker build"
+      version: "latest/stable"
+      check_status: "${SNAP_DATA}/var/lock/buildkit.enabled"
+      supported_architectures:
+        - amd64
+
