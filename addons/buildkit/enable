@@ -22,7 +22,7 @@ then
   echo "Fetching Buildkit CLI version $BUILDKIT_VERSION for $SNAP_ARCH."
   run_with_sudo mkdir -p "${SNAP_DATA}/tmp/buildkit"
   (cd "${SNAP_DATA}/tmp/buildkit"
-  fetch_as https://github.com/vmware-tanzu/buildkit-cli-for-kubectl/releases/download/${BUILDKIT_VERSION}/linux_${BUILDKIT_VERSION}.tgz "$SNAP_DATA/tmp/buildkit/buildkit.tar.gz"
+  fetch_as https://github.com/vmware-tanzu/buildkit-cli-for-kubectl/releases/download/${BUILDKIT_VERSION}/linux-${BUILDKIT_VERSION}.tgz "$SNAP_DATA/tmp/buildkit/buildkit.tar.gz"
   run_with_sudo gzip -q -d "$SNAP_DATA/tmp/buildkit/buildkit.tar.gz"
   run_with_sudo tar -xvf "$SNAP_DATA/tmp/buildkit/buildkit.tar"
   run_with_sudo chmod 777 "$SNAP_DATA/tmp/buildkit/buildkit")
