@@ -8,7 +8,7 @@ CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
 echo "Disabling Buildkit"
 
-run_with_sudo rm -rf "${SNAP_DATA}/bin/kubectl-buildkit"
-run_with_sudo rm -rf "${SNAP_DATA}/bin/kubectl-build"
+run_with_sudo rm -rf "${SNAP}/bin/kubectl-buildkit"
+run_with_sudo rm -rf "${SNAP}/bin/kubectl-build"
 run_with_sudo rm -rf "$SNAP_USER_COMMON/buildkit.lock"
 

@@ -58,7 +58,7 @@ microk8s-addons:
     - name: "buildkit"
       description: "A kubernetes based drop in replacement for docker build"
       version: "latest/stable"
-      check_status: "${SNAP_DATA}/bin/kubectl-buildkit"
+      check_status: "${SNAP/bin/kubectl-buildkit"
       supported_architectures:
         - amd64
 

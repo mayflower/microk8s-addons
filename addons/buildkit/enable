@@ -9,7 +9,7 @@ CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
 echo "Enabling Buildkit"
 
-if [ ! -f "${SNAP_DATA}/bin/kubectl-buildkit" ]
+if [ ! -f "${SNAP}/bin/kubectl-buildkit" ]
 then
   BUILDKIT_VERSION="v0.1.6"
 
@@ -19,16 +19,15 @@ then
   fi
 
   echo "Fetching Buildkit CLI version $BUILDKIT_VERSION for $SNAP_ARCH."
-  echo "Available Paths are $PATH"
   run_with_sudo mkdir -p "${SNAP_DATA}/tmp/buildkit"
   cd "${SNAP_DATA}/tmp/buildkit"
   fetch_as https://github.com/vmware-tanzu/buildkit-cli-for-kubectl/releases/download/${BUILDKIT_VERSION}/linux-${BUILDKIT_VERSION}.tgz "$SNAP_DATA/tmp/buildkit/buildkit.tar.gz"
   run_with_sudo gzip -q -d "$SNAP_DATA/tmp/buildkit/buildkit.tar.gz"
   run_with_sudo tar -xvf "$SNAP_DATA/tmp/buildkit/buildkit.tar"
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
-  run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-buildkit" "$SNAP_DATA/bin/"
-  run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-build" "$SNAP_DATA/bin/"
-  run_with_sudo chmod +x "$SNAP_DATA/bin/"
+  run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-buildkit" "$SNAP/bin/"
+  run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-build" "$SNAP/bin/"
+  run_with_sudo chmod +x $SNAP/bin/kubectl-build*
   run_with_sudo rm -rf "${SNAP_DATA}/tmp/buildkit"
 fi
 
