@@ -27,7 +27,7 @@ then
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
   run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-buildkit" "$SNAP_DATA/bin/"
   run_with_sudo mv "$SNAP_DATA/tmp/buildkit/kubectl-build" "$SNAP_DATA/bin/"
-  run_with_sudo chmod +x "$SNAP_DATA/bin/*"
+  run_with_sudo chmod +x "$SNAP_DATA/bin/"
   run_with_sudo rm -rf "${SNAP_DATA}/tmp/buildkit"
 fi
 
