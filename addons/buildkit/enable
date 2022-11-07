@@ -19,6 +19,7 @@ then
   fi
 
   echo "Fetching Buildkit CLI version $BUILDKIT_VERSION for $SNAP_ARCH."
+  echo "Available Paths are $PATH"
   run_with_sudo mkdir -p "${SNAP_DATA}/tmp/buildkit"
   cd "${SNAP_DATA}/tmp/buildkit"
   fetch_as https://github.com/vmware-tanzu/buildkit-cli-for-kubectl/releases/download/${BUILDKIT_VERSION}/linux-${BUILDKIT_VERSION}.tgz "$SNAP_DATA/tmp/buildkit/buildkit.tar.gz"
