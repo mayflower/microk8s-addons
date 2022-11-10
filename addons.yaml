@@ -61,4 +61,10 @@ microk8s-addons:
       check_status: "${SNAP_DATA}/bin/kubectl-buildkit"
       supported_architectures:
         - amd64
-
+    - name: "nocalhost"
+      description: "Nocalhost is a cloud-native development tool based on IDE"
+      version: "latest/stable"
+      check_status: "pod/nocalhost"
+      supported_architectures:
+        - amd64
+        - arm64
