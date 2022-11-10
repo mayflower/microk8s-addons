@@ -24,10 +24,6 @@ To use the addons provided by this repository please add it to your current micr
 microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/
 ```
 
-<<<<<<< HEAD
-
-=======
->>>>>>> dbd673a (A bit more documentation)
 ### Nocalhost
 
 This addon provides support for (Nocalhost)[https://nocalhost/]
@@ -41,8 +37,6 @@ This addon provides support for (Nocalhost)[https://nocalhost/]
 > * Developing with instant file synchronization: instantly sync your code change to remote container without rebuilding images or restarting containers.
 
 This addon installs nocalhost into your microk8s cluster and provides the nhctl command line Interface. 
-
-<<<<<<< HEAD
 
 ### Buildkit
 
@@ -62,9 +56,6 @@ microk8s kubectl build
 microk8s kubectl buildkit
 ```
 
-
-=======
->>>>>>> dbd673a (A bit more documentation)
 ### Spin / Wasm Addon
 
 This addon installs support for [Spin](https://spin.fermyon.dev/)
@@ -381,21 +372,13 @@ This addon install the vela command line client as a microk8s plugin.
 microk8s vela version
 ```
 
-<<<<<<< HEAD
 Vela can be used with the velaux dashboard. 
 
 ```shell
  microk8s vela port-forward -n vela-system addon-velaux 9082:80
 ```
-
-
-
 ## How to use this addons repository
 
-=======
-## How to use this addons repository
-
->>>>>>> dbd673a (A bit more documentation)
 ### Adding repositories
 
 3rd party addons repositories are supported on MicroK8s v1.24 and onwards. To add a repository on an already installed MicroK8s you have to use the `microk8s addons repo` command and provide a user friendly repo name, the path to the repository and optionally a branch within the repository. For this repository:
@@ -487,6 +470,3 @@ microk8s-addons:
         - amd64
 ```
 
-## Adding new addons
-
-See [`HACKING.md`](./HACKING.md) for instructions on how to develop custom MicroK8s addons.
