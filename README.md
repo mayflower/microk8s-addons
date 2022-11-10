@@ -24,7 +24,6 @@ To use the addons provided by this repository please add it to your current micr
 microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/
 ```
 
-
 ### Nocalhost
 
 This addon provides support for (Nocalhost)[https://nocalhost/]
@@ -39,7 +38,6 @@ This addon provides support for (Nocalhost)[https://nocalhost/]
 
 This addon installs nocalhost into your microk8s cluster and provides the nhctl command line Interface. 
 
-
 ### Buildkit
 
 This addon installs support for [BuildKit CLI](https://github.com/vmware-tanzu/buildkit-cli-for-kubectl)
@@ -49,15 +47,27 @@ This addon installs support for [BuildKit CLI](https://github.com/vmware-tanzu/b
 > multi-architecture container images.
 
 To enable BuildKit CLI support type
-```
+
+```shell
 microk8s enable buildkit
 ```
+
 Now two additional commands are available: 
-```
+
+```shell
 microk8s kubectl build
 microk8s kubectl buildkit
 ```
 
+Please not that microk8s does need a rootless builder to work. 
+
+```shell
+# Create a builder
+microk8s kubectl buildkit create microk9sbuilder --rootless
+
+# call the builder to build the current Dockerfile
+microk8s kubectl build --builder microk8sbuilder -t localhost:32000/myimage .
+```
 
 ### Spin / Wasm Addon
 
@@ -381,8 +391,6 @@ Vela can be used with the velaux dashboard.
  microk8s vela port-forward -n vela-system addon-velaux 9082:80
 ```
 
-
-
 ## How to use this addons repository
 
 ### Adding repositories
@@ -475,7 +483,3 @@ microk8s-addons:
       supported_architectures:
         - amd64
 ```
-
-## Adding new addons
-
-See [`HACKING.md`](./HACKING.md) for instructions on how to develop custom MicroK8s addons.

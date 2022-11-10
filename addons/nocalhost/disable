@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e
+
+source $SNAP/actions/common/utils.sh
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+NOCALHOST_NS="nocalhost"
+
+echo "Disabling Nocalhost"
+
+$HELM uninstall nocalhost -n $NOCALHOST_NS || true
+$KUBECTL delete namespace $NOCALHOST_NS
+
+run_with_sudo rm -rf "${SNAP_DATA}/bin/nhctl"
+run_with_sudo rm -rf "$SNAP_COMMON/plugins/nhctl"
+
+
