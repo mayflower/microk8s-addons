@@ -49,9 +49,9 @@ microk8s-addons:
       supported_architectures:
         - amd64
     - name: "spin"
-      description: "A simple runner for spin based on wasmtime" 
+      description: "Support for deislabs.io containerd shims for fermyon spin and spiderlightning based on wasmtime" 
       version: "latest/stable"
-      check_status: "${SNAP_DATA}/var/lock/spin.enabled"
+      check_status: "${SNAP_DATA}/var/lock/wasm.enabled"
       supported_architectures:
         - amd64
         - arm64

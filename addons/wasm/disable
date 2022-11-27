@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -e
+
+source $SNAP/actions/common/utils.sh
+
+SHIM_BINARY_SPIN="containerd-shim-spin-v1"
+SHIM_BINARY_SLIGHT="containerd-shim-slight-v1"
+SHIM_PATH="{SNAP_DATA}/bin/"
+
+echo "Disabling Spin"
+CONTAINERD_TEMPLATE="${SNAP_DATA}/args/containerd-template.toml"
+CONTAINERD_ENV="${SNAP_DATA}/args/containerd-env"
+run_with_sudo sed -i '/^# wasm_shim start/,/^# wasm_shim end/{/#wasm_shim end/!d}' "${CONTAINERD_TEMPLATE}"
+run_with_sudo sed -i '/^# wasm_shim start/,/^# wasm_shim end/{/#wasm_shim end/!d}' "${CONTAINERD_ENV}"
+run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
+run_with_sudo rm -f "${SHIM_PATH}${SHIM_BINARY_SPIN}"
+run_with_sudo rm -f "${SHIM_PATH}${SHIM_BINARY_SLIGHT}"
+run_with_sudo rm -f "$SNAP_COMMON/plugin/wasm-to-oci"
+run_with_sudo rm -f "${SNAP_DATA}/var/lock/wasm.enabled"
+
