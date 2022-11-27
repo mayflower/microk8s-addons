@@ -5,7 +5,7 @@ Please regard this repository as development only, all mature software is going 
 
 This repository contains 10 addons:
 
-* **spin**, a framework for building and running event-driven microservice applications with WebAssembly
+* **wasm**, a framework for building and running event-driven microservice applications with WebAssembly
 * **istio**, a copy of the existing plugin with an updated version 
 * **redis**, a simple redis addon based on bitnamis helm chart, needed for dapr
 * **dapr**, a platform agnostic event driven application runtime for microservices
@@ -69,9 +69,9 @@ microk8s kubectl buildkit create microk9sbuilder --rootless
 microk8s kubectl build --builder microk8sbuilder -t localhost:32000/myimage .
 ```
 
-### Spin / Wasm Addon
+### Spin / Spiderlightning / Wasm Addon
 
-This addon installs support for [Spin](https://spin.fermyon.dev/)
+This addon installs support for [Spin](https://spin.fermyon.dev/) and [SpiderLightning](https://deislabs.io/posts/introducing-spiderlightning-and-slight/)
 
 > Spin is a framework for building and running event-driven microservice applications with
 > WebAssembly (Wasm) components. With Spin, we’re trying to make it easier to get started 
@@ -80,13 +80,13 @@ This addon installs support for [Spin](https://spin.fermyon.dev/)
 
 This addon provides a simple way to make your first steps with web assembly payloads. 
 
-You can enable Spin support with 
+You can enable Spin / Spiderlightning / Wasm support with 
 
 ```
-microk8s enable spin
+microk8s enable wasm
 ```
 
-The spin module includes a wrapper for [wasm-to-oci](https://github.com/engineerd/wasm-to-oci), that can be used 
+The wasm module includes a wrapper for [wasm-to-oci](https://github.com/engineerd/wasm-to-oci), that can be used 
 to push WebAssembly modules to the microk8s registry: 
 
 ```
