@@ -8,7 +8,7 @@ SHIM_BINARY_SPIN="containerd-shim-spin-v1"
 SHIM_BINARY_SLIGHT="containerd-shim-slight-v1"
 SHIM_PATH="{SNAP_DATA}/bin/"
 
-echo "Disabling Spin"
+echo "Disabling wasm shims"
 CONTAINERD_TEMPLATE="${SNAP_DATA}/args/containerd-template.toml"
 CONTAINERD_ENV="${SNAP_DATA}/args/containerd-env"
 run_with_sudo sed -i '/^# wasm_shim start/,/^# wasm_shim end/{/#wasm_shim end/!d}' "${CONTAINERD_TEMPLATE}"
