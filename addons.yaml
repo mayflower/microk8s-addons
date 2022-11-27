@@ -48,7 +48,7 @@ microk8s-addons:
       check_status: "pod/keycloak-0"
       supported_architectures:
         - amd64
-    - name: "spin"
+    - name: "wasm"
       description: "Support for deislabs.io containerd shims for fermyon spin and spiderlightning based on wasmtime" 
       version: "latest/stable"
       check_status: "${SNAP_DATA}/var/lock/wasm.enabled"
