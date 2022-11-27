@@ -4,7 +4,8 @@ set -e
 
 source $SNAP/actions/common/utils.sh
 
-SHIM_BINARY="containerd-shim-spin-v1"
+SHIM_BINARY_SPIN="containerd-shim-spin-v1"
+SHIM_BINARY_SLIGHT="containerd-shim-slight-v1"
 SHIM_PATH="${SNAP_DATA}/plugin/${SHIM_BINARY}"
 SHIM_VERSION="v0.3.3"
 WASM_TO_OCI_VERSION="v0.1.2"
@@ -12,11 +13,11 @@ WASM_TO_OCI_VERSION="v0.1.2"
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
-echo "Enabling fermyon spin"
+echo "Enabling spiderlightning and spin containerd shims"
 
 # Install shim binary 
 
-if [ ! -f "${SNAP_DATA}/bin/${SHIM_BINARY}" ]
+if [ ! -f "${SNAP_DATA}/bin/${SHIM_BINARY_SPIN}" ]
 then
   if [ $SNAP_ARCH == "arm64" ]; then
     SHIM_ARCH="aarch64"
@@ -28,15 +29,16 @@ then
   fi
 
   echo "Fetching shim version $SHIM_VERSION for $SHIM_ARCH on $SNAP_ARCH."
-  run_with_sudo mkdir -p "${SNAP_DATA}/tmp/spin"
-  cd "${SNAP_DATA}/tmp/spin"
+  run_with_sudo mkdir -p "${SNAP_DATA}/tmp/wasm"
+  cd "${SNAP_DATA}/tmp/wasm"
   echo "Fetching https://github.com/deislabs/containerd-wasm-shims/releases/download/${SHIM_VERSION}/containerd-wasm-shims-v1-linux-${SHIM_ARCH}.tar.gz"
-  fetch_as      "https://github.com/deislabs/containerd-wasm-shims/releases/download/${SHIM_VERSION}/containerd-wasm-shims-v1-linux-${SHIM_ARCH}.tar.gz" "$SNAP_DATA/tmp/spin/spin.tar.gz"
-  run_with_sudo gzip -q -d "$SNAP_DATA/tmp/spin/spin.tar.gz"
-  run_with_sudo tar -xvf "$SNAP_DATA/tmp/spin/spin.tar"
+  fetch_as      "https://github.com/deislabs/containerd-wasm-shims/releases/download/${SHIM_VERSION}/containerd-wasm-shims-v1-linux-${SHIM_ARCH}.tar.gz" "$SNAP_DATA/tmp/wasm/shim.tar.gz"
+  run_with_sudo gzip -q -d "$SNAP_DATA/tmp/wasm/shim.tar.gz"
+  run_with_sudo tar -xvf "$SNAP_DATA/tmp/wasm/shim.tar"
   run_with_sudo mkdir -p "$SNAP_DATA/bin/"
-  run_with_sudo mv "$SNAP_DATA/tmp/spin/${SHIM_BINARY}"  "$SNAP_DATA/bin/"
-  run_with_sudo rm -rf "$SNAP_DATA/tmp/spin"
+  run_with_sudo mv "$SNAP_DATA/tmp/wasm/${SHIM_BINARY_SPIN}"  "$SNAP_DATA/bin/"
+  run_with_sudo mv "$SNAP_DATA/tmp/wasm/${SHIM_BINARY_SLIGHT}"  "$SNAP_DATA/bin/"
+  run_with_sudo rm -rf "$SNAP_DATA/tmp/wasm"
 fi
 
 # Install wasm-to-oci to support wasm upload to the local registry 
@@ -62,25 +64,25 @@ fi
 
 # Add path to containerd environment
 CONTAINERD_ENV="${SNAP_DATA}/args/containerd-env"
-if ! grep -q "SPIN_PATH" "${CONTAINERD_ENV}"; then
-  echo "Add Spin Path (${SHIM_PATH})to containerd environment"
-  run_with_sudo echo -ne "# spin start\nSPIN_PATH=\"${SNAP_DATA}/bin\"\nPATH=\$PATH:\$SPIN_PATH\n# spin end\n" >> "${CONTAINERD_ENV}"
+if ! grep -q "WASM_SHIM_PATH" "${CONTAINERD_ENV}"; then
+  echo "Add wasm shim path (${SHIM_PATH})to containerd environment"
+  run_with_sudo echo -ne "# wasm_shim start\nSHIM_PATH=\"${SNAP_DATA}/bin\"\nPATH=\$PATH:\$SHIM_PATH\n# wasm_shim end\n" >> "${CONTAINERD_ENV}"
 else
-  echo "Spin path already in containerd environment"
+  echo "Wasm shim path already in containerd environment"
 fi
 
 # Add spin runtime to containerd-template.toml 
 
 CONTAINERD_TEMPLATE="${SNAP_DATA}/args/containerd-template.toml"
-if ! grep -q "spin" "${CONTAINERD_TEMPLATE}"; then
-  echo "Adding plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin to containerd configuration"
-  run_with_sudo sed -i "/plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.*/i\\# spin start\\n\\        [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.spin]\\n\\          runtime_type = \"io.containerd.spin.v1\"\\n\\n\\          [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.spin.options]\\n\\            BinaryName = \"${SHIM_BINARY}\"\\n# spin end\\n" "${CONTAINERD_TEMPLATE}"
+if ! grep -q "wasm_shim" "${CONTAINERD_TEMPLATE}"; then
+	echo "Adding plugins."io.containerd.grpc.v1.cri".containerd.runtimes.(spin|slight) to containerd configuration"
+  run_with_sudo sed -i "/plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.*/i\\# wasm_shim start\\n\\        [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.spin]\\n\\          runtime_type = \"io.containerd.spin.v1\"\\n\\n\\          [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.spin.options]\\n\\            BinaryName = \"${SHIM_BINARY_SPIN}\"\\n\\n        [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.slight]\\n\\          runtime_type = \"io.containerd.slight.v1\"\\n\\n\\          [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.slight.options]\\n\\            BinaryName = \"${SHIM_BINARY_SLIGHT}\"\\n# wasm_shim end\\n" "${CONTAINERD_TEMPLATE}"
 
   run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
 else
-  echo "Spin already exists in ${CONTAINERD_TEMPLATE}"
+  echo "wasm shim already exists in ${CONTAINERD_TEMPLATE}"
 fi
-run_with_sudo touch "${SNAP_DATA}/var/lock/spin.enabled"
+run_with_sudo touch "${SNAP_DATA}/var/lock/wasm.enabled"
 
 $KUBECTL apply -f "${CURRENT_DIR}/runtime.yaml"
 
