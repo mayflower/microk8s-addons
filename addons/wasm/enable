@@ -84,7 +84,7 @@ if ! grep -q "wasm_shim" "${CONTAINERD_TEMPLATE}"; then
 	        "        [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.slight]\\n\\"+
                 "          runtime_type = \"io.containerd.slight.v1\"\\n\\n\\"+
                 "          [plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.slight.options]\\n\\"+
-                "            BinaryName = \"${SHIM_BINARY_SLIGHT}\"\\n# wasm_shim end\\n"" "${CONTAINERD_TEMPLATE}"
+                "            BinaryName = \"${SHIM_BINARY_SLIGHT}\"\\n# wasm_shim end\\n" "${CONTAINERD_TEMPLATE}"
 
   run_with_sudo preserve_env snapctl restart "${SNAP_NAME}.daemon-containerd"
 else
