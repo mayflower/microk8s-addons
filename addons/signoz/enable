@@ -14,7 +14,7 @@ SIGNOZ_NS="signoz"
 "$SNAP/microk8s-enable.wrapper" hostpath-storage
 
 # make sure the "signoz" namespace exist
-$KUBECTL create namespace "$SIGNOZ" > /dev/null 2>&1 || true
+$KUBECTL create namespace "$SIGNOZ_NS" > /dev/null 2>&1 || true
 
 # Make sure that PVC resize is possible (it is with hostpath-storage)
 DEFAULT_STORAGE_CLASS=$($KUBECTL get storageclass -o=jsonpath='{.items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")].metadata.name}')
