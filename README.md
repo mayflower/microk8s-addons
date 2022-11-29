@@ -15,6 +15,7 @@ This repository contains 10 addons:
 * **postgresql**, an open source object-relational database known for reliability and data integrity
 * **nocalhost**, a cloud-native development tool with integrated IDE support
 * **buildkit**, a tool for building container images with your Kubernetes cluster
+* **signoz**, Open source Application Performance Monitoring (APM) & Observability tool
 
 ## Addons
 
@@ -23,6 +24,14 @@ To use the addons provided by this repository please add it to your current micr
 ```
 microk8s addons repo add mayflower https://github.com/mayflower/microk8s-addons/
 ```
+### Signoz
+
+This addon provides support for (SigNoz)[https://signoz.io/].
+> Monitor your applications and troubleshoot problems in your deployed applications, an open-source alternative to DataDog, New Relic, etc.
+> SigNoz helps developers monitor applications and troubleshoot problems in their deployed applications. SigNoz uses distributed tracing to gain visibility into your software stack.
+
+This addon installs SigNoz into your microk8s cluster. 
+
 
 ### Nocalhost
 
@@ -77,6 +86,9 @@ This addon installs support for [Spin](https://spin.fermyon.dev/) and [SpiderLig
 > WebAssembly (Wasm) components. With Spin, we’re trying to make it easier to get started 
 > with using WebAssembly on the server so that we can all take advantage of the security, 
 > portability, and speed WebAssembly provides when it comes to running microservices.    
+
+
+
 
 This addon provides a simple way to make your first steps with web assembly payloads. 
 

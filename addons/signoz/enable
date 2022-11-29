@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eu
+
+source "$SNAP/actions/common/utils.sh"
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+SIGNOZ_NS="signoz"
+
+"$SNAP/microk8s-enable.wrapper" dns
+"$SNAP/microk8s-enable.wrapper" helm3
+"$SNAP/microk8s-enable.wrapper" hostpath-storage
+
+# make sure the "signoz" namespace exist
+$KUBECTL create namespace "$SIGNOZ_NS" > /dev/null 2>&1 || true
+
+# Make sure that PVC resize is possible (it is with hostpath-storage)
+DEFAULT_STORAGE_CLASS=$($KUBECTL get storageclass -o=jsonpath='{.items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")].metadata.name}')
+$KUBECTL patch storageclass "$DEFAULT_STORAGE_CLASS" -p '{"allowVolumeExpansion": true}'
+
+# Install signoz via helm
+$HELM repo add signoz https://charts.signoz.io
+$HELM repo update
+$HELM -n $SIGNOZ_NS install signoz signoz/signoz
+
+echo "Signoz is installed"
+

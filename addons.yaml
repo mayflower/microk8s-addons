@@ -68,3 +68,9 @@ microk8s-addons:
       supported_architectures:
         - amd64
         - arm64
+    - name: "signoz"
+      description: "Open source Application Performance Monitoring (APM) & Observability tool"
+      version: "latest/stable"
+      check_status: "pod/signoz"
+      supported_architectures:
+        - amd64
