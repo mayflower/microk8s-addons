@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+source $SNAP/actions/common/utils.sh
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+SIGNOZ_NS="signoz"
+
+echo "Disabling signoz"
+
+$HELM uninstall signoz -n $SIGNOZ_NS || true
+$KUBECTL delete namespace  $SIGNOZ_NS
