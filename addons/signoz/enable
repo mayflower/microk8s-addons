@@ -21,7 +21,7 @@ DEFAULT_STORAGE_CLASS=$($KUBECTL get storageclass -o=jsonpath='{.items[?(@.metad
 $KUBECTL patch storageclass "$DEFAULT_STORAGE_CLASS" -p '{"allowVolumeExpansion": true}'
 
 # Install signoz via helm
-$HELM repo add bitnami https://charts.signoz.io
+$HELM repo add signoz https://charts.signoz.io
 $HELM repo update
 $HELM -n $SIGNOZ_NS install signoz signoz/signoz
 
