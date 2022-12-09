@@ -4,6 +4,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         arch: [armv6l, armv7l, aarch64]
         include:
@@ -22,6 +23,7 @@ jobs:
     steps:
     - uses: pguyot/arm-runner-action@v2
       with:
+        image_additional_mb: 1024
         base_image: ${{ matrix.base_image }}
         cpu: ${{ matrix.cpu }}
         cpu_info: ${{ matrix.cpu_info }}
