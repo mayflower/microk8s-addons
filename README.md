@@ -16,6 +16,7 @@ This repository contains 10 addons:
 * **nocalhost**, a cloud-native development tool with integrated IDE support
 * **buildkit**, a tool for building container images with your Kubernetes cluster
 * **signoz**, Open source Application Performance Monitoring (APM) & Observability tool
+* **devtron**, Devtron is a tool integration platform for kubernetes
 
 ## Addons
 
@@ -32,6 +33,12 @@ This addon provides support for (SigNoz)[https://signoz.io/].
 
 This addon installs SigNoz into your microk8s cluster. 
 
+### Devtron
+
+This addon provides support for (Devtron)[https://devtron.ai/].
+>Devtron deeply integrates with products across the lifecycle of microservices i.e., CI/CD, security, cost, debugging, and observability via an intuitive web interface. Devtron helps you to deploy, observe, manage & debug the existing Helm apps in all your clusters.
+
+This addon installs Devtron into zour microk8s cluster.
 
 ### Nocalhost
 

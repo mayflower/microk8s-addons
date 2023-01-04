@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -eu
+
+source "$SNAP/actions/common/utils.sh"
+
+KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+DEVTRON_NS="devtroncd"
+
+"$SNAP/microk8s-enable.wrapper" dns
+"$SNAP/microk8s-enable.wrapper" helm3
+"$SNAP/microk8s-enable.wrapper" hostpath-storage
+
+# make sure the "postgresql" namespace exist
+$KUBECTL create namespace "$DEVTRON_NS" > /dev/null 2>&1 || true
+
+$HELM repo add devtron https://helm.devtron.ai
+$HELM repo update
+$HELM install devtron devtron/devtron-operator --create-namespace --namespace $DEVTRON_NS --set components.devtron.service.type=NodePort --set installer.modules={cicd} --set argo-cd.enabled=true
+
+echo "Devtron is installed"
+

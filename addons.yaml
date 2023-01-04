@@ -74,3 +74,10 @@ microk8s-addons:
       check_status: "pod/signoz"
       supported_architectures:
         - amd64
+    - name: "devtron"
+      description: "Devtron is a tool integration platform for kubernetes"
+      version: "latest/stable"
+      check_status: "pod/dashboard"
+      supported_architectures:
+        - amd64
+        - arm64
