@@ -7,7 +7,7 @@ source $SNAP/actions/common/utils.sh
 SHIM_BINARY_SPIN="containerd-shim-spin-v1"
 SHIM_BINARY_SLIGHT="containerd-shim-slight-v1"
 SHIM_PATH="${SNAP_DATA}/plugin/${SHIM_BINARY}"
-SHIM_VERSION="v0.3.3"
+SHIM_VERSION="v0.4.0"
 WASM_TO_OCI_VERSION="v0.1.2"
 
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
@@ -87,10 +87,10 @@ run_with_sudo touch "${SNAP_DATA}/var/lock/wasm.enabled"
 $KUBECTL apply -f "${CURRENT_DIR}/runtime.yaml"
 
 
-echo "Spin support is available"
+echo "Spin and Spiderlightning WASM support is available"
 echo ""
 echo ""
-echo "To use the Fermyon Spin  runtime set the 'spin' runtimeClassName, eg:"
+echo "To use the Fermyon Spin runtime set the 'spin' runtimeClassName, eg:"
 echo ""
 echo "apiVersion: apps/v1"
 echo "kind: Deployment"
