@@ -7,10 +7,9 @@ source $SNAP/actions/common/utils.sh
 KUBECTL="$SNAP/microk8s-kubectl.wrapper"
 HELM="$SNAP/microk8s-helm3.wrapper"
 
-POSTGRESQL_NS="postgresql"
 
 echo "Disabling postgresql"
 
-$HELM uninstall postgresql -n $POSTGRESQL_NS || true
+$HELM uninstall postgresql -n cnpg-system | true
 
 $KUBECTL delete pvc -l release=postgresql

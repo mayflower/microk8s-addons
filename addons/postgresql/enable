@@ -4,21 +4,16 @@ set -eu
 
 source "$SNAP/actions/common/utils.sh"
 
-KUBECTL="$SNAP/microk8s-kubectl.wrapper"
+ENABLE="$SNAP/microk8s-enable.wrapper"
 HELM="$SNAP/microk8s-helm3.wrapper"
 
-POSTGRESQL_NS="postgresql"
+$ENABLE dns
+$ENABLE helm3
+$ENABLE hostpath-storage
 
-"$SNAP/microk8s-enable.wrapper" dns
-"$SNAP/microk8s-enable.wrapper" helm3
-"$SNAP/microk8s-enable.wrapper" hostpath-storage
-
-# make sure the "postgresql" namespace exist
-$KUBECTL create namespace "$POSTGRESQL_NS" > /dev/null 2>&1 || true
-
-$HELM repo add bitnami https://charts.bitnami.com/bitnami
+$HELM repo add cnpg https://cloudnative-pg.github.io/charts
 $HELM repo update
-$HELM -n $POSTGRESQL_NS install postgresql bitnami/postgresql
+$HELM upgrade --install cnpg --namespace cnpg-system --create-namespace cnpg/cloudnative-pg
 
-echo "postgresql is installed"
+echo "The CloudNativePG Postgresql Operator is installed"
 
