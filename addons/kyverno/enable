@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -eu
+
+source "$SNAP/actions/common/utils.sh"
+
+ENABLE="$SNAP/microk8s-enable.wrapper"
+HELM="$SNAP/microk8s-helm3.wrapper"
+
+$ENABLE dns
+$ENABLE helm3
+$ENABLE hostpath-storage
+
+$HELM repo add kyverno https://kyverno.github.io/kyverno/
+$HELM repo update
+$HELM upgrade --install kyverno --namespace kyverno --create-namespace kyverno/kyverno --set replicaCount=1
+
+echo "Kyverno is installed"
+

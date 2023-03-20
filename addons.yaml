@@ -35,6 +35,7 @@ microk8s-addons:
       check_status: "pod/postgresql-0"
       supported_architectures:
         - amd64
+        - arm64
     - name: "kubeview"
       description: "Kubernetes cluster visualiser and visual explorer"
       version: "latest/stable"
@@ -74,3 +75,10 @@ microk8s-addons:
       check_status: "pod/signoz"
       supported_architectures:
         - amd64
+    - name: "kyverno"
+      description: "Kyverno is a policy engine designed for Kubernetes"
+      version: "latest/stable"
+      check_status: "pod/kyverno"
+      supported_architectures:
+        - amd64
+        - arm64
