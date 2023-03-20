@@ -10,6 +10,5 @@ HELM="$SNAP/microk8s-helm3.wrapper"
 
 echo "Disabling postgresql"
 
-$HELM uninstall postgresql -n cnpg-system | true
+$HELM uninstall cnpg -n cnpg-system | true
 
-$KUBECTL delete pvc -l release=postgresql
